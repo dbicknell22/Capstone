@@ -1,0 +1,17 @@
+cohort_cut,max_lag,"corr(rotation_spread, calendar_time)","corr(rotation_spread, k_shape_gap) [level]",predict k_shape_gap_chg: F p-value,predict k_shape_gap_chg: R2,predict agg_equity_growth: F p-value,predict agg_equity_growth: R2
+generation:BabyBoom,2,0.039,0.003,0.708,0.004,0.716,0.005
+generation:BabyBoom,4,0.039,0.003,0.081,0.025,0.017,0.061
+generation:GenX,2,-0.243,-0.022,0.391,0.006,0.618,0.018
+generation:GenX,4,-0.243,-0.022,0.176,0.02,0.128,0.041
+generation:Millennial,2,-0.862,-0.703,0.061,0.009,0.11,0.014
+generation:Millennial,4,-0.862,-0.703,0.194,0.014,0.307,0.018
+generation:Silent,2,0.55,0.35,0.986,0.0,0.867,0.003
+generation:Silent,4,0.55,0.35,0.361,0.029,0.821,0.006
+age:age70plus,2,0.912,0.83,0.432,0.011,0.945,0.001
+age:age70plus,4,0.912,0.83,0.562,0.018,0.397,0.022
+age:age55to69,2,-0.487,-0.644,0.043,0.024,0.723,0.003
+age:age55to69,4,-0.487,-0.644,0.075,0.026,0.717,0.011
+age:age40to54,2,-0.737,-0.533,0.273,0.024,0.905,0.002
+age:age40to54,4,-0.737,-0.533,0.105,0.043,0.555,0.018
+age:ageunder40,2,-0.771,-0.682,0.017,0.039,0.266,0.021
+age:ageunder40,4,-0.771,-0.682,0.054,0.057,0.563,0.026

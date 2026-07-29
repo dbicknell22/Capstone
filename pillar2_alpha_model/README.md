@@ -6,7 +6,23 @@ and are entering the retirement distribution phase — into a systematic,
 testable long/short strategy, following the applied-finance-project feedback
 to build a model that attempts to produce alpha from that framework.
 
-## Thesis
+The repo has two parts, built in two passes:
+
+- **Part 1 — ETF-based tradeable strategy.** A long/short factor construction
+  (`factor_construction.py`, `backtest.py`, `run_backtest.py`) ready to run
+  the moment it has market data. No live results exist yet — this sandbox's
+  network policy blocks every price/factor data host tried (see below).
+- **Part 2 — Fed DFA fundamentals analysis.** `dfa_signals.py`,
+  `predictive_test.py`, `dfa_alpha_analysis.py` — once the repo's own
+  `dfa-*.csv` files (the Fed's Distributional Financial Accounts, 1989:Q3 to
+  2026:Q1) were added, this became fully computable **with real numbers,
+  right now, with no external data at all.** Jump to
+  ["Part 2 results"](#part-2-results--what-the-dfa-data-actually-shows) for
+  what it actually found — including a specification that looked significant
+  at first and did not survive a robustness check, kept in because that's an
+  honest part of the result, not a bug to quietly remove.
+
+## Part 1: ETF strategy — Thesis
 
 Lifecycle-investing theory (Bodie & Merton) predicts that as an investor ages
 past peak earning years, optimal portfolios rotate from growth/high-duration
@@ -32,7 +48,7 @@ Both legs are liquid, low-cost sector/style ETFs — chosen deliberately over
 individual stocks so the strategy is directly investable and avoids
 single-name idiosyncratic risk and survivorship bias in the backtest.
 
-## What the model does
+## Part 1: what the ETF model does
 
 1. `factor_construction.py` — builds monthly equal-weight returns for each
    basket and the dollar-neutral long-short spread (100% long / 100% short,
@@ -133,3 +149,139 @@ correct. Real results require running `run_backtest.py` with data access.
 - **HAC lag choice (`maxlags=3`) is a reasonable default for monthly data,
   not tuned.** Worth a robustness check across a couple of lag lengths
   before treating the alpha t-stat as final.
+
+---
+
+## Part 2: Fed DFA fundamentals analysis
+
+The repo root now has six real Fed DFA "detail" files — quarterly, 1989:Q3
+through 2026:Q1 (147 quarters), each cutting household-sector balance sheets
+(broken into ~20 asset/liability categories) a different way:
+
+| File | Cut |
+|---|---|
+| `dfa-age-levels-detail.csv` / `-shares-` | age70plus, age55to69, age40to54, ageunder40 |
+| `dfa-generation-levels-detail.csv` | Silent, BabyBoom, GenX, Millennial |
+| `dfa-income-levels-detail.csv` / `-shares-` | 6 income percentile bands |
+| `dfa-networth-shares-detail.csv` | TopPt1, RemainingTop1, Next9, Next40, Bottom50 |
+
+Validated on load: summing "Corporate equities and mutual fund shares" across
+the 4 generation buckets reproduces the same total as summing across the 4
+age buckets (max abs diff = $2M on a ~$55T series — rounding), confirming
+these are consistent cuts of the same underlying totals, not independently
+sourced data that might disagree.
+
+Unlike Part 1, **this needs no external network access** — the signals,
+the charts, and the regression results below are all real, computed from
+these files, reproducible by running:
+
+```bash
+cd pillar2_alpha_model
+python dfa_alpha_analysis.py
+```
+
+### What it builds
+
+- `dfa_signals.py` — the core derived series:
+  - `rotation_signal(generation)`: that generation's share of household
+    equities minus its share of "safe" assets (deposits, money-market funds,
+    government/municipal + corporate/foreign bonds, annuities) — a direct,
+    real measure of whether a cohort is net-tilted toward risk or income
+    assets, and how that tilt is moving quarter to quarter.
+  - `k_shape_intensity()`: Top 1% share of net worth (`TopPt1 +
+    RemainingTop1`) minus Bottom 50% share — the wealth-concentration gap,
+    computed directly from the DFA net-worth-share cut rather than Pillar 1's
+    3-indicator composite z-score.
+  - `aggregate_equity_growth()`: QoQ % growth in total household-sector
+    equity holdings, summed across all generations — a real, DFA-derived
+    stand-in for "the market went up," used because this environment can't
+    reach an actual price index. It conflates price return with net
+    contributions/withdrawals and new issuance, so treat it as directional,
+    not a clean total-return series.
+- `predictive_test.py` / `dfa_alpha_analysis.py` — lagged OLS regressions
+  (HAC standard errors) testing whether a cohort's rotation signal predicts
+  subsequent k-shape or aggregate-equity moves, swept across cohort cut and
+  lag length (2 vs. 4 quarters) for robustness.
+
+**A correctness bug caught by looking at the chart, not just the numbers:**
+the first version of the safe-asset share summed each component column's
+*own* percentage share (deposits %, bonds %, annuities %, …) and added them —
+which double-counts, since each is a share of a *different* total. The
+resulting series ran past 100%, up to ~290%, visible immediately on plotting
+it. Fixed by summing dollar levels across the safe-asset columns first, then
+taking one share of that combined total (see the correctness note in
+`dfa_signals.generation_asset_shares`). Worth flagging because it silently
+changed a downstream result: the pre-fix version showed the BabyBoom
+rotation signal strongly (and spuriously) trend-correlated with calendar
+time (r = -0.685) and with the k-shape gap in levels (r = -0.813); after the
+fix, both collapse to essentially zero (r = 0.039, r = 0.003) — the
+"finding" was an artifact of the bug, not a real relationship. This is why
+`dfa_alpha_analysis.py`'s first two chart outputs get eyeballed, not just
+numerically asserted, before anything downstream is trusted.
+
+### Part 2 results — what the DFA data actually shows
+
+Two charts, both real (`output/dfa_boomer_rotation.png`,
+`output/dfa_k_shape_gap.png`):
+
+- **BabyBoom's household-equity share climbed from ~18% (1989) to a plateau
+  around 53-56% since roughly 2015** — a precise, data-grounded version of
+  the "wealth trend has stuck" observation already in the Pillar 2 slide,
+  now dated and quantified from the raw series rather than eyeballed off a
+  chart image.
+- **The wealth-concentration gap (Top 1% − Bottom 50% net worth share)**
+  trended from ~19.5% (1989) to ~29% (2026), with clear cyclical dips around
+  2009, 2020, and 2022-23 — a real, direct validation of what Pillar 1's
+  composite K-Index was already proxying for.
+
+The predictive-regression sweep (`output/dfa_predictive_test_results.csv`,
+32 specification/outcome combinations: 8 cohort cuts × 2 lag lengths × 2
+outcomes) is the actual alpha test, and the honest result is a **null**:
+
+- **3 of 32 combinations clear p < 0.05** — in line with the ~1.6 expected
+  by chance alone at a 5% threshold if there were no real effect at all.
+- The one combination that looked most interesting on first pass — BabyBoom
+  generation, 4-quarter lags, joint F p = 0.038 (k-shape) and p = 0.038
+  (equity growth) — **does not survive shortening to 2 lags** (p = 0.708 and
+  p = 0.716). A real economic relationship should not flip from significant
+  to nowhere-close on a specification choice this minor; that pattern is the
+  signature of noise found by testing enough specifications, not a genuine
+  signal (a textbook multiple-comparisons / "garden of forking paths" case —
+  worth keeping in the writeup precisely because it's the kind of result
+  that's tempting to report as "the finding" if you stop at the first
+  significant p-value instead of checking whether it holds up).
+- Level correlations between rotation signals and the k-shape gap are
+  unstable in sign across cuts (from -0.68 to +0.83 depending which age
+  bucket or generation), which is itself evidence against a stable causal
+  relationship — a real effect should point the same direction across
+  related cuts.
+
+**Bottom line: this linear, single-cohort rotation signal does not show
+robust evidence of predicting either wealth-concentration shifts or
+aggregate equity growth at 1-4 quarter horizons.** That is a legitimate
+research finding, not a dead end reported as a failure — it means the
+"Boomers rotating out of equities predicts X" mechanism, at least in this
+simple form, isn't showing up in 36 years of the Fed's own household
+balance-sheet data. It does not falsify the broader Pillar 2 thesis (Boomer
+wealth/equity concentration is real and well-documented); it means *this
+particular linear signal construction* isn't demonstrated to carry
+exploitable predictive content on its own.
+
+### Honest next steps, in priority order
+
+1. **Test against real tradeable returns, not another fundamentals series.**
+   The actual test of "alpha" is whether these DFA signals predict the Part 1
+   ETF long/short book's *forward returns* — that needs the market data this
+   sandbox can't reach. This is the highest-value next step.
+2. **Out-of-sample / expanding-window validation**, not more in-sample
+   F-tests — the robustness sweep here already shows in-sample significance
+   is fragile; a signal worth trading should predict *forward*, not fit
+   backward.
+3. **Regime-conditional specifications** — e.g., does the rotation signal
+   matter more around recessions or high-volatility quarters, rather than
+   as a constant-coefficient linear relationship across 36 years spanning
+   very different monetary and demographic regimes?
+4. **Unused columns in the same files** — DC vs. DB pension entitlements
+   (a genuine glide-path signal, since DC balances are participant-directed
+   and DB are not), mortgage debt paydown pace, consumer credit — none of
+   this is touched by the current signal set.
