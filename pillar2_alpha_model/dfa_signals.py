@@ -14,10 +14,13 @@ buckets in dfa-age-levels-detail.csv (max abs diff = $2M on a ~$55T series,
 i.e. rounding) — the two files are consistent cuts of the same underlying
 household-sector totals.
 """
-from pathlib import Path
 import pandas as pd
+from _pathutil import find_dir_containing
 
-ROOT = Path(__file__).parent.parent  # repo root, where the dfa-*.csv files live
+# Repo root, where the dfa-*.csv files live. Resolved dynamically (not via
+# __file__) so this also works when pasted or %load-ed into a notebook cell,
+# where __file__ is never defined.
+ROOT = find_dir_containing("dfa-generation-levels-detail.csv")
 
 EQUITY_COL = "Corporate equities and mutual fund shares"
 SAFE_COLS = ["Deposits", "Money market fund shares",

@@ -7,8 +7,11 @@ instructive error — populate data_cache/ manually in that case (see README).
 """
 from pathlib import Path
 import pandas as pd
+from _pathutil import find_dir_containing
 
-CACHE_DIR = Path(__file__).parent / "data_cache"
+# Resolved dynamically (not via __file__) so this also works when pasted or
+# %load-ed into a notebook cell, where __file__ is never defined.
+CACHE_DIR = find_dir_containing("requirements.txt") / "data_cache"
 
 
 def _cache_path(name: str) -> Path:
