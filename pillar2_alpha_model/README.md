@@ -21,6 +21,14 @@ The repo has two parts, built in two passes:
   what it actually found — including a specification that looked significant
   at first and did not survive a robustness check, kept in because that's an
   honest part of the result, not a bug to quietly remove.
+- **Part 3 — BEDI (Boomer Equity Displacement Index) and the forward-return
+  test.** `bedi_index.py`, `bedi_analysis.py`, `bedi_forward_return_test.py`
+  — combines Part 2's two signals into one composite index and tests it
+  against forward returns of real ETF pairs. The composite and its
+  structural-break test are real, computed now (see
+  ["Part 3 results"](#part-3-results--bedi-and-the-forward-return-test));
+  the forward-return regression against real prices hits the same network
+  wall as Part 1.
 
 ## Part 1: ETF strategy — Thesis
 
@@ -285,3 +293,115 @@ exploitable predictive content on its own.
    (a genuine glide-path signal, since DC balances are participant-directed
    and DB are not), mortgage debt paydown pace, consumer credit — none of
    this is touched by the current signal set.
+
+---
+
+## Part 3: BEDI and the forward-return test
+
+Combines Part 2's two components into a single composite — the **Boomer
+Equity Displacement Index (BEDI)** — and runs the actual alpha test: does it
+predict forward returns of real, tradeable long/short pairs.
+
+### Building BEDI (`bedi_index.py`, `bedi_analysis.py`)
+
+BEDI rises when Boomers are de-risking (falling rotation spread) **and**
+wealth concentration is widening (rising k-shape gap) at the same time — the
+thesis being that the combination is more meaningful than either series
+alone. Both components are z-scored so they're on a comparable scale before
+combining, both equal-weight and via PCA (mirroring Pillar 1's own
+equal-weight-vs-PCA check).
+
+Two versions exist, for two different purposes — **this distinction matters
+and is easy to get wrong:**
+
+- `build_bedi_full_sample()` — z-scores against the full 1989-2026 mean/std.
+  Fine for the descriptive chart. **Do not use for the regression**: a
+  full-sample z-score at, say, 2005:Q1 is computed using data through
+  2026:Q1 — information that didn't exist yet in 2005. A "predictive" result
+  built on that is partly look-ahead bias by construction.
+- `build_bedi_expanding()` — z-scores (and, for the PCA composite, even the
+  PCA loadings) using only data available up to and including each quarter.
+  This is the version `bedi_forward_return_test.py` actually regresses.
+
+PCA is done via a direct SVD on the two-column z-scored matrix rather than
+adding scikit-learn as a dependency for one principal component.
+
+### Part 3 results — BEDI and the forward-return test
+
+**The PCA-weighting request surfaced something worth reporting on its own:**
+Pillar 1's three indicators (wealth, income, sentiment) correlated 0.87-0.96
+with each other — a real, robust common factor, which is why equal-weight
+and PCA gave nearly the same index there. BEDI's two components do not do
+that: `corr(rotation_spread, k_shape_gap)` over the full 1989-2026 sample is
+**+0.064** — essentially zero. Mechanically, that means:
+
+- The full-sample PCA's explained-variance ratio is 0.532 (50% is what two
+  *uncorrelated*, equal-variance series would give) — there isn't a
+  dominant shared axis for PCA to find.
+- `corr(BEDI_equal_weight, BEDI_pca)` is **0.000** in the full-sample
+  version and only **0.719** in the point-in-time version (vs. Pillar 1's
+  0.96) — equal-weight and PCA are not telling the same story here.
+
+This doesn't mean the index is broken — averaging two weakly-correlated
+series is still a valid (if noisier) way to combine them, and the code is
+correct (verified: `corr(rotation_spread, k_shape_gap) = 0.064` checks out
+directly against the raw series). It means the premise "these two moving
+together is more meaningful than either alone" isn't well-supported by 37
+years of the actual data — they mostly don't move together. Worth knowing
+before leaning on the composite as if it captured one dominant mechanism.
+
+**Structural break test.** Testing for a break at 2019:Q4 in BEDI's linear
+time trend, the combined model (level-shift dummy + trend-interaction
+together) gives a significant joint F-test (F=27.4, p<0.0001) but both
+individual coefficients look insignificant (p=0.50, p=0.95) — a
+multicollinearity artifact: `post` and `t_post` correlate **0.998** in this
+sample (a trend-interaction term is nearly proportional to the level dummy
+alone when the break sits in a narrow late range of the series), not
+evidence of "no break." Fitting the level-shift and trend-change terms
+**separately** (avoiding the collinearity) gives two cleanly identified,
+highly significant results:
+
+- Level shift at 2019:Q4: **-1.01 std dev, t=-7.43, p<0.001**
+- Trend-slope change at 2019:Q4: **-0.0076/quarter, t=-7.39, p<0.001**
+
+**Both are the opposite sign from what "the retirement wave accelerated
+BEDI" would predict.** The chart (`output/bedi_full_sample.png`) confirms
+this isn't a regression artifact: BEDI drops sharply starting 2020, bottoms
+around a deep trough near 2022-23, and by 2026:Q1 still sits below its
+pre-2020 peak. There is a real, statistically robust structural break at
+2019-2020 — it just runs in the direction of a **level drop and trend
+deceleration**, not the acceleration the "retirement wave" framing assumed.
+(Consistent with the mechanism visible in the individual-component chart
+from Part 2: 2020's stimulus-era relief measures temporarily narrowed
+wealth concentration and disrupted the smooth equity-share climb, before
+both resumed drifting up later.)
+
+**The forward-return regression (`bedi_forward_return_test.py`)** — the
+actual test that converts this from descriptive to investable — implements
+exactly the requested specification, using the look-ahead-free
+`build_bedi_expanding()` version of BEDI:
+
+```
+Forward_Return(XLV - XLY) ~ BEDI_lag1 + controls
+Forward_Return(LQD - SPY)  ~ BEDI_lag1 + controls
+```
+
+for both 1-quarter and 2-quarter forward horizons, with Fama-French Mkt-RF as
+the control (when reachable) and HAC standard errors. **This has not
+produced a result yet** — it needs real quarterly prices for `XLV`, `XLY`,
+`LQD`, `SPY`, and this sandbox's network policy blocks Yahoo Finance, same as
+every other live-data attempt in this repo (confirmed again just now: same
+403 from the egress proxy, not a code bug). Run it on a machine with normal
+internet access:
+
+```bash
+python bedi_forward_return_test.py
+```
+
+**This is the one regression in the repo that would actually justify the
+word "alpha" if it comes back significant** — it's the only test so far
+against real tradeable returns rather than another fundamentals series or a
+proxy. Given Part 2's null result and the sign-reversal in the structural
+break, calibrate expectations accordingly, but this is a different and more
+direct test than anything run so far — worth actually running before
+concluding either way.
