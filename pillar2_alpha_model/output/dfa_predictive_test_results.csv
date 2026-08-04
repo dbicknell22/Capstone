@@ -1,4 +1,4 @@
-cohort_cut,max_lag,"corr(rotation_spread, calendar_time)","corr(rotation_spread, k_shape_gap) [level]",predict k_shape_gap_chg: F p-value,predict k_shape_gap_chg: R2,predict agg_equity_growth: F p-value,predict agg_equity_growth: R2
+cohort_cut,max_lag,"corr(rotation, calendar_time)","corr(rotation, k_shape) [level]",k_shape F p-value,k_shape R2,eq_growth F p-value,eq_growth R2
 generation:BabyBoom,2,0.039,0.003,0.708,0.004,0.716,0.005
 generation:BabyBoom,4,0.039,0.003,0.081,0.025,0.017,0.061
 generation:GenX,2,-0.243,-0.022,0.391,0.006,0.618,0.018

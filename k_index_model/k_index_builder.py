@@ -119,7 +119,13 @@ def build_k_index():
     Z["K"] = Z[[f"z_{p}" for p in pillars_used]].mean(axis=1)
 
     scores, loadings = _first_pc(Z[[f"z_{p}" for p in pillars_used]].values)
-    Z["K_pca"] = pd.Series(scores, index=Z.index)
+    # the notebook z-scores the raw SVD projection before using it as K_pca
+    # (`Z["K_pca"] = zscore(pd.Series(M @ pc1, ...))`) -- match that exactly,
+    # otherwise K_pca ends up on the SVD's own scale instead of a comparable
+    # z-score (caught by diffing this module's kindex.csv output against a
+    # notebook rebuild of the same recipe -- corr(K, K_pca) is scale-invariant
+    # so it validated fine even with this missing, but the raw values didn't).
+    Z["K_pca"] = _zscore(pd.Series(scores, index=Z.index))
     if Z["K_pca"].corr(Z["K"]) < 0:
         Z["K_pca"] = -Z["K_pca"]
 
