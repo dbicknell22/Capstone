@@ -1,0 +1,118 @@
+/workspace/capstone/pillar2_alpha_model/bedi_forward_return_test.py:58: Pandas4Warning: Sorting by default when concatenating all DatetimeIndex is deprecated.  In the future, pandas will respect the default of `sort=False`. Specify `sort=True` or `sort=False` to silence this message. If you see this warnings when not directly calling concat, report a bug to pandas.
+  panel = pd.concat([bedi.rename("BEDI"), forward, forward2], axis=1).dropna(how="all")
+Panel built: 111 quarters (1998-09-30 -> 2026-03-31)
+
+[controls unavailable: Live Fama-French factor download failed. This environment likely blocks outbound calls to Dartmouth's data library (mba.tuck.dartmouth.edu). Run this on a machine with normal internet access, or drop a CSV at /workspace/capstone/pillar2_alpha_model/data_cache/ff_factors_monthly.csv with columns [Mkt-RF, SMB, HML, RMW, CMA, RF, UMD] (monthly %, indexed by month-end date).]
+
+=== Forward_Return(XLV - XLY), 1Q ahead ~ BEDI_lag1 ===
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:     XLV_minus_XLY_fwd1   R-squared:                       0.018
+Model:                            OLS   Adj. R-squared:                  0.009
+Method:                 Least Squares   F-statistic:                     1.915
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.169
+Time:                        23:14:50   Log-Likelihood:                 125.65
+No. Observations:                 106   AIC:                            -247.3
+Df Residuals:                     104   BIC:                            -242.0
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.0177      0.013     -1.380      0.167      -0.043       0.007
+BEDI_lag       0.0201      0.015      1.384      0.166      -0.008       0.049
+==============================================================================
+Omnibus:                        6.433   Durbin-Watson:                   2.332
+Prob(Omnibus):                  0.040   Jarque-Bera (JB):                8.805
+Skew:                           0.246   Prob(JB):                       0.0122
+Kurtosis:                       4.323   Cond. No.                         2.89
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+=== Forward_Return(XLV - XLY), 2Q ahead ~ BEDI_lag2 ===
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:     XLV_minus_XLY_fwd2   R-squared:                       0.007
+Model:                            OLS   Adj. R-squared:                 -0.003
+Method:                 Least Squares   F-statistic:                     1.037
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.311
+Time:                        23:14:50   Log-Likelihood:                 122.01
+No. Observations:                 104   AIC:                            -240.0
+Df Residuals:                     102   BIC:                            -234.7
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.0131      0.011     -1.206      0.228      -0.034       0.008
+BEDI_lag       0.0123      0.012      1.019      0.308      -0.011       0.036
+==============================================================================
+Omnibus:                        3.989   Durbin-Watson:                   2.301
+Prob(Omnibus):                  0.136   Jarque-Bera (JB):                4.597
+Skew:                           0.113   Prob(JB):                        0.100
+Kurtosis:                       4.005   Cond. No.                         2.88
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+=== Forward_Return(LQD - SPY), 1Q ahead ~ BEDI_lag1 ===
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:     LQD_minus_SPY_fwd1   R-squared:                       0.059
+Model:                            OLS   Adj. R-squared:                  0.048
+Method:                 Least Squares   F-statistic:                     6.331
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):             0.0136
+Time:                        23:14:50   Log-Likelihood:                 112.18
+No. Observations:                  93   AIC:                            -220.4
+Df Residuals:                      91   BIC:                            -215.3
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.0411      0.009     -4.782      0.000      -0.058      -0.024
+BEDI_lag       0.0345      0.014      2.516      0.012       0.008       0.061
+==============================================================================
+Omnibus:                       52.327   Durbin-Watson:                   2.205
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              199.593
+Skew:                           1.853   Prob(JB):                     4.56e-44
+Kurtosis:                       9.146   Cond. No.                         2.84
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+=== Forward_Return(LQD - SPY), 2Q ahead ~ BEDI_lag2 ===
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:     LQD_minus_SPY_fwd2   R-squared:                       0.044
+Model:                            OLS   Adj. R-squared:                  0.033
+Method:                 Least Squares   F-statistic:                     3.916
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):             0.0509
+Time:                        23:14:50   Log-Likelihood:                 111.46
+No. Observations:                  93   AIC:                            -218.9
+Df Residuals:                      91   BIC:                            -213.8
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.0381      0.008     -4.701      0.000      -0.054      -0.022
+BEDI_lag       0.0298      0.015      1.979      0.048       0.000       0.059
+==============================================================================
+Omnibus:                       48.309   Durbin-Watson:                   2.174
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              162.521
+Skew:                           1.745   Prob(JB):                     5.12e-36
+Kurtosis:                       8.455   Cond. No.                         2.84
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+
+
+=== Outlier-robustness check: LQD-SPY 1Q, with 2 most extreme quarters removed ===
+n=91, coef=0.0233, p=0.0248

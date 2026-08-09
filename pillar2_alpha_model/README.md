@@ -436,22 +436,41 @@ Forward_Return(XLV - XLY) ~ BEDI_lag1 + controls
 Forward_Return(LQD - SPY)  ~ BEDI_lag1 + controls
 ```
 
-for both 1-quarter and 2-quarter forward horizons, with Fama-French Mkt-RF as
-the control (when reachable) and HAC standard errors. **This has not
-produced a result yet** — it needs real quarterly prices for `XLV`, `XLY`,
-`LQD`, `SPY`, and this sandbox's network policy blocks Yahoo Finance, same as
-every other live-data attempt in this repo (confirmed again just now: same
-403 from the egress proxy, not a code bug). Run it on a machine with normal
-internet access:
+**Update: this now has a real result**, using the CRSP/WRDS ETF price data
+pulled for Part 1. Fama-French `Mkt-RF` as a control is still unavailable
+(same missing file as Part 1), so this ran without controls:
 
-```bash
-python bedi_forward_return_test.py
-```
+| Target | Horizon | BEDI_lag coefficient | p-value |
+|---|---|---|---|
+| XLV − XLY | 1Q | 0.0201 | 0.166 (not significant) |
+| XLV − XLY | 2Q | 0.0123 | 0.308 (not significant) |
+| **LQD − SPY** | **1Q** | **0.0345** | **0.012** |
+| LQD − SPY | 2Q | 0.0298 | 0.048 |
 
-**This is the one regression in the repo that would actually justify the
-word "alpha" if it comes back significant** — it's the only test so far
-against real tradeable returns rather than another fundamentals series or a
-proxy. Given Part 2's null result and the sign-reversal in the structural
-break, calibrate expectations accordingly, but this is a different and more
-direct test than anything run so far — worth actually running before
-concluding either way.
+**The sector-rotation pair (XLV vs. XLY) shows nothing. The bonds-vs-stocks
+pair (LQD vs. SPY) does** — BEDI rising predicts LQD outperforming SPY the
+following quarter, both at 1Q and (more weakly) 2Q horizons. This is
+directionally consistent with the K-Index model's independent finding that
+K predicts 10-year Treasury returns one quarter out (see
+`k_index_model/README.md`) — two different composite indices, built from
+different source data, both pointing to the same "divergence/de-risking
+signals precede a bond-favoring quarter" story.
+
+**Caveat before treating this as confirmed**: the LQD-SPY regression's
+residuals are strongly non-normal (skew 1.85, kurtosis 9.1, Jarque-Bera
+p≈0) — a sign a few extreme quarters may be doing a lot of work. The most
+extreme quarter is 2008:Q3 (the GFC, LQD beat SPY by 37 points the
+following quarter). Dropping the 2 most extreme quarters, the result
+survives but weakens: coefficient falls from 0.0345 to 0.0233, p rises from
+0.012 to 0.025 — still significant, so this isn't purely a single-crisis-
+quarter artifact, but the crisis quarter is a real contributor to the
+effect's magnitude, not just noise around a stable estimate.
+
+**This is the one regression in the repo that actually earns the word
+"alpha" if it holds up** — it's a test against real tradeable returns, it
+comes back significant, it survives a basic outlier check, and it
+independently corroborates a separate finding from the K-Index model. It
+is not yet a finished result: no out-of-sample validation, no risk-factor
+controls (Fama-French still missing), and N=93 quarters is a moderate
+sample for a claim this specific. Treat it as the most promising lead in
+this project, not as a proven strategy.
