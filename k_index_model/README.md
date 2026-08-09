@@ -155,6 +155,39 @@ doesn't do. Worth prioritizing this pairing (K → Treasury returns) for
 any further work — e.g. out-of-sample validation — over the S&P 500 result,
 which did not survive the same test.
 
+## Real results: FX (via currency ETFs) and gold
+
+`usdeur.csv` (`FXE`), `usdgbp.csv` (`FXB`), `usdjpy.csv` (`FXY` — note this
+one tracks the Yen's USD value, the *opposite* convention from a standard
+"USDJPY" quote, which conventionally rises when the dollar strengthens —
+doesn't affect the test, just matters if you're reading the coefficient's
+sign), and `gold.csv` (`GLD`) are now all real data, via the same CRSP/WRDS
+pull. Running the same lag-length robustness check applied to Treasury:
+
+| Target | Lagged joint F, n=1 | n=2 | n=3 | n=4 | Robust? |
+|---|---|---|---|---|---|
+| **Treasury** | p=0.015 | p=0.011 | p=0.020 | p=0.018 | **Yes — every lag length** |
+| USD/JPY | p=0.189 | p=0.116 | **p=0.013** | **p=0.012** | No — only appears at 3-4 lags |
+| USD/EUR | p=0.284 (at n=4) | — | — | — | No — not significant at any lag tried |
+| USD/GBP | p=0.155 (at n=4) | — | — | — | No — not significant at any lag tried |
+| Gold | p=0.143 (at n=4) | — | — | — | No — not significant at any lag tried |
+| S&P 500 | p=0.353 (at n=4) | — | — | — | No — see above |
+
+**USD/JPY is the same fragile pattern seen before with BEDI's structural
+break test and the Part 2 predictive-test sweep**: not significant with 1
+or 2 lags, only "significant" once 3-4 lag terms are added — the signature
+of a specification-mined result rather than a real relationship, not a
+finding to report as if it were.
+
+**Six of seven asset-price targets tested so far come back null (or
+fragile-and-not-robust). Treasury is the one exception.** That's a
+meaningful pattern in its own right: K does not show broad-based evidence
+of explaining asset prices across currencies, gold, or equities — its one
+robust relationship is specifically with interest-rate-sensitive assets
+(Treasuries), which fits a coherent story (widening divergence → economic
+stress → rate-cut expectations / flight to quality) rather than K being a
+generic "risk-on/risk-off" signal that should move everything at once.
+
 ## What's needed to get real numbers
 
 **The K-Index itself needs nothing further** — it's complete and validated.
