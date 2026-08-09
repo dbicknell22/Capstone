@@ -6,7 +6,7 @@ Dep. Variable:                      y   R-squared:                       0.099
 Model:                            OLS   Adj. R-squared:                  0.055
 Method:                 Least Squares   F-statistic:                     2.525
 Date:                Sun, 09 Aug 2026   Prob (F-statistic):             0.0337
-Time:                        22:25:15   Log-Likelihood:                 122.55
+Time:                        23:05:51   Log-Likelihood:                 122.55
 No. Observations:                 109   AIC:                            -233.1
 Df Residuals:                     103   BIC:                            -217.0
 Df Model:                           5                                         
@@ -37,7 +37,7 @@ Dep. Variable:                      y   R-squared:                       0.013
 Model:                            OLS   Adj. R-squared:                  0.003
 Method:                 Least Squares   F-statistic:                     1.679
 Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.198
-Time:                        22:25:15   Log-Likelihood:                 119.58
+Time:                        23:05:51   Log-Likelihood:                 119.58
 No. Observations:                 111   AIC:                            -235.2
 Df Residuals:                     109   BIC:                            -229.7
 Df Model:                           1                                         
@@ -64,7 +64,7 @@ Dep. Variable:                      y   R-squared:                       0.036
 Model:                            OLS   Adj. R-squared:                 -0.001
 Method:                 Least Squares   F-statistic:                     1.117
 Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.353
-Time:                        22:25:15   Log-Likelihood:                 118.86
+Time:                        23:05:51   Log-Likelihood:                 118.86
 No. Observations:                 109   AIC:                            -227.7
 Df Residuals:                     104   BIC:                            -214.3
 Df Model:                           4                                         
@@ -82,6 +82,96 @@ Omnibus:                        6.845   Durbin-Watson:                   1.916
 Prob(Omnibus):                  0.033   Jarque-Bera (JB):                6.329
 Skew:                          -0.546   Prob(JB):                       0.0422
 Kurtosis:                       3.446   Cond. No.                         7.69
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+
+=== treasury_10y_total_return_pct_chg ===
+--- Combined ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.156
+Model:                            OLS   Adj. R-squared:                  0.108
+Method:                 Least Squares   F-statistic:                     3.782
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):            0.00380
+Time:                        23:05:51   Log-Likelihood:                 185.42
+No. Observations:                  93   AIC:                            -358.8
+Df Residuals:                      87   BIC:                            -343.6
+Df Model:                           5                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0079      0.003      2.324      0.020       0.001       0.015
+K             -0.0332      0.016     -2.052      0.040      -0.065      -0.001
+K_lag1         0.0571      0.016      3.507      0.000       0.025       0.089
+K_lag2         0.0025      0.015      0.167      0.868      -0.026       0.031
+K_lag3        -0.0343      0.014     -2.372      0.018      -0.063      -0.006
+K_lag4         0.0172      0.014      1.207      0.228      -0.011       0.045
+==============================================================================
+Omnibus:                        5.517   Durbin-Watson:                   2.042
+Prob(Omnibus):                  0.063   Jarque-Bera (JB):                4.857
+Skew:                           0.473   Prob(JB):                       0.0882
+Kurtosis:                       3.599   Cond. No.                         9.36
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+--- Contemporaneous only ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.018
+Model:                            OLS   Adj. R-squared:                  0.007
+Method:                 Least Squares   F-statistic:                     1.259
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.265
+Time:                        23:05:51   Log-Likelihood:                 178.34
+No. Observations:                  93   AIC:                            -352.7
+Df Residuals:                      91   BIC:                            -347.6
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0080      0.003      2.323      0.020       0.001       0.015
+K              0.0069      0.006      1.122      0.262      -0.005       0.019
+==============================================================================
+Omnibus:                        7.416   Durbin-Watson:                   2.153
+Prob(Omnibus):                  0.025   Jarque-Bera (JB):                7.071
+Skew:                           0.550   Prob(JB):                       0.0291
+Kurtosis:                       3.784   Cond. No.                         1.47
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+--- Lagged only ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.096
+Model:                            OLS   Adj. R-squared:                  0.055
+Method:                 Least Squares   F-statistic:                     3.169
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):             0.0175
+Time:                        23:05:51   Log-Likelihood:                 182.20
+No. Observations:                  93   AIC:                            -354.4
+Df Residuals:                      88   BIC:                            -341.7
+Df Model:                           4                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0075      0.003      2.331      0.020       0.001       0.014
+K_lag1         0.0299      0.010      3.015      0.003       0.010       0.049
+K_lag2        -0.0083      0.016     -0.514      0.607      -0.040       0.023
+K_lag3        -0.0270      0.015     -1.856      0.063      -0.056       0.002
+K_lag4         0.0174      0.015      1.172      0.241      -0.012       0.047
+==============================================================================
+Omnibus:                        7.320   Durbin-Watson:                   2.031
+Prob(Omnibus):                  0.026   Jarque-Bera (JB):                7.084
+Skew:                           0.528   Prob(JB):                       0.0290
+Kurtosis:                       3.845   Cond. No.                         7.91
 ==============================================================================
 
 Notes:

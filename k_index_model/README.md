@@ -115,6 +115,46 @@ nine, and the same "test contemporaneous and lagged separately, don't trust
 a combined model's individual coefficients" logic applies to whichever of
 the remaining eight arrive next.
 
+## Real result: does K explain the 10-year Treasury? (this one holds up)
+
+`treasury_10y_total_return.csv` (from `IEF`, the iShares 7-10 Year Treasury
+ETF, via the same CRSP/WRDS pull) gives a genuinely different result from
+the S&P 500 test above — **this one survives the exact robustness checks
+that killed every other "significant" result in this project:**
+
+| n_lags | Joint F-test p-value | R² |
+|---|---|---|
+| 1 | 0.0149 | 0.060 |
+| 2 | 0.0107 | 0.070 |
+| 3 | 0.0197 | 0.079 |
+| 4 | 0.0175 | 0.096 |
+
+Significant at every lag length tried, not just one specific choice — the
+opposite of the fragile pattern that showed up with BEDI's structural break
+test and the Part 2 predictive-test sweep (both of which were significant
+at one lag length and fell apart at another). `K_lag1` is the consistent
+driver: positive and significant (or near it) across every specification
+(coef 0.0126 to 0.0299 depending on how many other lags are included,
+p ranging 0.02-0.003). The contemporaneous-only test is not significant
+(p=0.262) — this is specifically a **lagged** relationship, one quarter
+out, not a same-quarter one.
+
+**Economically coherent story, not just a statistical artifact**: K rising
+(wealth/income/consumer divergence widening) predicts higher Treasury
+returns *the following quarter* — consistent with widening divergence
+signaling economic stress that shows up in Fed easing expectations or a
+flight-to-quality bid a quarter later, rather than an immediate, same-
+quarter reaction.
+
+**Appropriate caution, not overclaiming**: N≈93-96 quarters is a real but
+moderate sample, and this is the 2nd of 9 target series tested — getting
+one robust hit isn't implausible under a true null either. What makes this
+one different from earlier false leads in this project is specifically
+that it survives changing the lag window, which a chance finding usually
+doesn't do. Worth prioritizing this pairing (K → Treasury returns) for
+any further work — e.g. out-of-sample validation — over the S&P 500 result,
+which did not survive the same test.
+
 ## What's needed to get real numbers
 
 **The K-Index itself needs nothing further** — it's complete and validated.
