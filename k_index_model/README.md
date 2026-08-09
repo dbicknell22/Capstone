@@ -82,6 +82,39 @@ mattered, and the approximation isn't used anywhere in this module.
 - `run_k_regressions.py` — entry point; runs both regression families,
   skipping (not fabricating) any target whose CSV isn't present yet.
 
+## Real result: does K explain the S&P 500? (first real market-data test in this repo)
+
+The S&P 500's own return (`sprtrn`, from the same CRSP/WRDS pull used in
+`pillar2_alpha_model`) is now real data here — the first target series in
+either model actually tested against real market returns rather than a
+DFA-derived proxy or a skipped placeholder. `python run_k_regressions.py`
+finds `data_cache/sp500.csv` and runs it for real:
+
+|  | K coefficient | p-value |
+|---|---|---|
+| **Combined** (`y ~ const + K_t + K_(t-1..4)` together) | 0.0786 | **0.007** |
+| **Contemporaneous only** (`y ~ const + K_t`) | 0.0137 | 0.195 |
+| **Lagged only, joint F-test** (`y ~ const + K_(t-1..4)`) | — | 0.353 |
+
+**This is exactly the trap the separated-regression methodology exists to
+catch.** The combined model makes K's contemporaneous term look strongly
+significant (p=0.007) — but `corr(K, K_lag1) = 0.918` (K is a slow-moving
+quarterly index, so of course it's highly autocorrelated with its own
+recent past), and that severe multicollinearity is enough to distort which
+individual coefficient looks significant in a model that includes 4 highly
+correlated copies of the same series. Tested properly — contemporaneous and
+lagged as two separate, cleanly-identified regressions, the same discipline
+used for BEDI's structural break test and the consumer-credit/equity-growth
+mechanism tests — **neither shows a significant relationship** (p=0.195,
+p=0.353). The honest read: K does not show robust evidence of explaining
+S&P 500 quarterly returns, contemporaneously or with a lag, once tested
+without the multicollinearity artifact.
+
+This doesn't change the overall advice — it's one target series out of
+nine, and the same "test contemporaneous and lagged separately, don't trust
+a combined model's individual coefficients" logic applies to whichever of
+the remaining eight arrive next.
+
 ## What's needed to get real numbers
 
 **The K-Index itself needs nothing further** — it's complete and validated.

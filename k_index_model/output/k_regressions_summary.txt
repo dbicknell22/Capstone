@@ -1,0 +1,89 @@
+=== sp500_pct_chg ===
+--- Combined ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.099
+Model:                            OLS   Adj. R-squared:                  0.055
+Method:                 Least Squares   F-statistic:                     2.525
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):             0.0337
+Time:                        22:25:15   Log-Likelihood:                 122.55
+No. Observations:                 109   AIC:                            -233.1
+Df Residuals:                     103   BIC:                            -217.0
+Df Model:                           5                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0200      0.008      2.613      0.009       0.005       0.035
+K              0.0786      0.029      2.683      0.007       0.021       0.136
+K_lag1        -0.0670      0.035     -1.936      0.053      -0.135       0.001
+K_lag2        -0.0111      0.033     -0.341      0.733      -0.075       0.053
+K_lag3         0.0571      0.035      1.614      0.107      -0.012       0.126
+K_lag4        -0.0559      0.029     -1.925      0.054      -0.113       0.001
+==============================================================================
+Omnibus:                        2.690   Durbin-Watson:                   2.069
+Prob(Omnibus):                  0.261   Jarque-Bera (JB):                2.202
+Skew:                          -0.336   Prob(JB):                        0.333
+Kurtosis:                       3.181   Cond. No.                         8.74
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+--- Contemporaneous only ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.013
+Model:                            OLS   Adj. R-squared:                  0.003
+Method:                 Least Squares   F-statistic:                     1.679
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.198
+Time:                        22:25:15   Log-Likelihood:                 119.58
+No. Observations:                 111   AIC:                            -235.2
+Df Residuals:                     109   BIC:                            -229.7
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0199      0.008      2.561      0.010       0.005       0.035
+K              0.0137      0.011      1.296      0.195      -0.007       0.034
+==============================================================================
+Omnibus:                        5.605   Durbin-Watson:                   2.045
+Prob(Omnibus):                  0.061   Jarque-Bera (JB):                5.024
+Skew:                          -0.488   Prob(JB):                       0.0811
+Kurtosis:                       3.368   Cond. No.                         1.47
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+--- Lagged only ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.036
+Model:                            OLS   Adj. R-squared:                 -0.001
+Method:                 Least Squares   F-statistic:                     1.117
+Date:                Sun, 09 Aug 2026   Prob (F-statistic):              0.353
+Time:                        22:25:15   Log-Likelihood:                 118.86
+No. Observations:                 109   AIC:                            -227.7
+Df Residuals:                     104   BIC:                            -214.3
+Df Model:                           4                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0208      0.008      2.579      0.010       0.005       0.037
+K_lag1        -0.0050      0.025     -0.200      0.842      -0.054       0.044
+K_lag2         0.0114      0.032      0.362      0.717      -0.050       0.073
+K_lag3         0.0464      0.037      1.252      0.210      -0.026       0.119
+K_lag4        -0.0590      0.032     -1.871      0.061      -0.121       0.003
+==============================================================================
+Omnibus:                        6.845   Durbin-Watson:                   1.916
+Prob(Omnibus):                  0.033   Jarque-Bera (JB):                6.329
+Skew:                          -0.546   Prob(JB):                       0.0422
+Kurtosis:                       3.446   Cond. No.                         7.69
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
