@@ -22,16 +22,26 @@ OUT = "output"
 
 def main():
     rets = build_long_short(START, END)
-    ff = load_ff_factors(START, END) / 100.0
+    print(f"Basket returns built: {len(rets)} months, "
+          f"{rets.index.min().date()} -> {rets.index.max().date()}\n")
 
-    stats_df = pd.DataFrame({leg: perf_stats(rets[leg], ff.get("RF")) for leg in rets.columns}).T
+    try:
+        ff = (load_ff_factors(START, END) / 100.0).get("RF")
+    except RuntimeError as e:
+        print(f"[Fama-French factors unavailable -- Sharpe below uses RF=0, not the real risk-free rate]\n{e}\n")
+        ff = None
+
+    stats_df = pd.DataFrame({leg: perf_stats(rets[leg], ff) for leg in rets.columns}).T
     stats_df.to_csv(f"{OUT}/performance_stats.csv")
     print(stats_df, "\n")
 
-    model = alpha_regression(rets["long_short"], START, END)
-    with open(f"{OUT}/alpha_regression_summary.txt", "w") as f:
-        f.write(str(model.summary()))
-    print(model.summary())
+    try:
+        model = alpha_regression(rets["long_short"], START, END)
+        with open(f"{OUT}/alpha_regression_summary.txt", "w") as f:
+            f.write(str(model.summary()))
+        print(model.summary())
+    except RuntimeError as e:
+        print(f"[Alpha regression not run -- Fama-French factor data unavailable]\n{e}")
 
     cum = (1 + rets).cumprod()
     cum.plot(figsize=(10, 6), title="Pillar 2 Demographic Tilt — Cumulative Growth of $1")

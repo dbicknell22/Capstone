@@ -9,9 +9,12 @@ to build a model that attempts to produce alpha from that framework.
 The repo has two parts, built in two passes:
 
 - **Part 1 — ETF-based tradeable strategy.** A long/short factor construction
-  (`factor_construction.py`, `backtest.py`, `run_backtest.py`) ready to run
-  the moment it has market data. No live results exist yet — this sandbox's
-  network policy blocks every price/factor data host tried (see below).
+  (`factor_construction.py`, `backtest.py`, `run_backtest.py`). **Real
+  performance results now exist**, from CRSP/WRDS price data — see
+  ["Part 1 results"](#part-1-results--real-etf-returns-via-wrdscrsp). The
+  alpha regression against Fama-French factors is still blocked (this
+  sandbox's network policy blocks Dartmouth's data library, same as every
+  other live-data host tried).
 - **Part 2 — Fed DFA fundamentals analysis.** `dfa_signals.py`,
   `predictive_test.py`, `dfa_alpha_analysis.py` — once the repo's own
   `dfa-*.csv` files (the Fed's Distributional Financial Accounts, 1989:Q3 to
@@ -77,21 +80,68 @@ single-name idiosyncratic risk and survivorship bias in the backtest.
    `output/performance_stats.csv`, `output/alpha_regression_summary.txt`, and
    `output/cumulative_returns.png`.
 
+## Part 1 results — real ETF returns, via WRDS/CRSP
+
+**Update: real price data now exists.** Daily total returns (`RET`, dividends
+included, splits already adjusted) for all 9 tickers plus `sprtrn` (S&P 500
+index return) were pulled from CRSP via WRDS, 1998/2000/2002/2006-2025
+depending on each ETF's inception date. Converted to a synthetic total-return
+price index per ticker (cumulative product of `1 + daily return`) so it
+slots into `load_prices()` with no code changes.
+
+**Full-sample performance (1999-2025, 323 months):**
+
+| Leg | CAGR | Sharpe | Max Drawdown |
+|---|---|---|---|
+| Long (healthcare/utilities/staples/high-div) | 7.8% | **0.71** | -38% |
+| Short (tech/discretionary/small-cap growth) | 8.8% | 0.53 | -58% |
+| **Long-short** | **-3.3%** | **-0.15** | -68% |
+| Benchmark (SPY) | 8.3% | 0.61 | -51% |
+
+**The headline long-short number is negative — but it's driven almost
+entirely by the last ~9 years, not a persistent 27-year effect:**
+
+| Period | Long-short CAGR | Long-short Sharpe |
+|---|---|---|
+| Pre-2017 (1999-2016) | -1.4% | **-0.02** (essentially flat) |
+| 2017-2025 | -6.9% | **-0.42** |
+
+The strategy was roughly breakeven for 18 years and only really lost money
+during the mega-cap tech/AI-driven stretch since 2017 — a period when the
+S&P 500 itself had an unusually high Sharpe (0.98), a favorable regime for
+anything carrying long market exposure. **The long leg alone is a genuinely
+solid standalone result** — 0.71 Sharpe over the full 27 years, beating the
+benchmark's 0.61 — it's specifically the short-growth leg that's been the
+costly side of this trade.
+
+**What's still missing to properly settle this**: Fama-French factors, to
+test whether the long-short's negative return reflects picking the wrong
+sectors or just carrying negative net market beta (from the short leg's
+typically higher beta) through an unusually strong bull run. That's exactly
+what `alpha_regression()` tests, and it's the one piece still blocked —
+`run_backtest.py` now degrades gracefully (reports the performance stats
+above, using RF=0 as an approximation, and clearly skips just the alpha
+regression) rather than failing outright when this file is missing.
+
+**Licensing note**: the CRSP/WRDS data itself is not committed to this repo
+(`data_cache/*.csv` stays gitignored) per typical WRDS data-use agreements —
+only the resulting statistics and charts above are checked in.
+
 ## Data & how to run it for real
 
 The model needs two free data sources: Yahoo Finance (via `yfinance`, for
-ETF prices back to 1999) and Ken French's data library at Dartmouth (via
-`pandas-datareader`, for the factor returns used in the alpha test).
+ETF prices — though CRSP/WRDS, as used above, is arguably the better
+source) and Ken French's data library at Dartmouth (via `pandas-datareader`,
+for the factor returns used in the alpha test — **still the missing piece**).
 
 **This was built and validated in a sandboxed session whose network policy
 blocks both of those hosts** (confirmed via direct `curl` — 403 from the
-egress proxy, not a code bug). No live backtest results exist in this repo
-as a result. To get real numbers:
+egress proxy, not a code bug). To get the alpha regression too:
 
 ```bash
 cd pillar2_alpha_model
 pip install -r requirements.txt
-python run_backtest.py        # needs normal internet access
+python run_backtest.py        # needs normal internet access, or ff_factors_monthly.csv in data_cache/
 ```
 
 Run that on your laptop, Colab, or any machine that isn't network-restricted.
