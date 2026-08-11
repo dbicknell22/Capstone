@@ -4,3 +4,9 @@ real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,1,0.055
 real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,2,1.782279983271988,0.17213294099228996
 real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,3,1.7464099203395431,0.1605151062197709
 real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,4,1.4034213892498348,0.23627998334451322
+K-Index,contemporaneous,0,0.023618390760207362,0.0207677453541546
+K-Index,lagged_joint_F,1,2.6139939268753527,0.10889697577617215
+K-Index,lagged_joint_F,2,1.4880891334518282,0.23057146280019727
+K-Index,lagged_joint_F,3,0.8948651952062733,0.446588949428983
+K-Index,lagged_joint_F,4,0.729096296385444,0.5741525722267454
+K-Index,contemporaneous_ex_outliers,0,0.018479151529628868,0.07479960392703748

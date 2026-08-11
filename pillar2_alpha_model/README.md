@@ -177,7 +177,7 @@ Full output: `output/strategy_predictor_test_results.txt` and
 combining this with the performance table above (`strategy_predictor_scorecard.py`)
 is saved at `output/strategy_predictor_scorecard.png`.
 
-## Does the Boomer real-estate rotation signal predict REIT returns?
+## Does the Boomer real-estate rotation signal, or K, predict REIT returns?
 
 `reit_basket_quarterly.csv` (added to the repo root, 140 quarters
 1990Q1-2024Q4, single `reit_ret` column) is the first real, investable
@@ -186,33 +186,62 @@ estate up to now was DFA dollar levels, never a tradeable return. That
 makes it the natural target for `real_estate_rotation()`, the most literal
 "are Boomers selling their homes" proxy built in this project, instead of
 testing it only against the (non-real-estate) long/short strategy basket.
-Note: the file has no composition/source documentation beyond its column
-name — treat this as "a REIT basket return series" pending confirmation of
-its exact source.
+K-Index is tested against it too — REITs were the one major asset class K
+hadn't been tested against yet (stocks, Treasuries, FX, gold are already
+done), and real estate is arguably the asset class most directly exposed
+to a Boomer-retirement/K-shape story. Note: the file has no
+composition/source documentation beyond its column name — treat this as
+"a REIT basket return series" pending confirmation of its exact source.
 
 Same methodology as everywhere else in this project — contemporaneous and
 lagged tested separately, swept across lags 1-4:
 
-| Test | Value |
-|---|---|
-| N | 140 quarters (1990-03-31 → 2024-12-31) |
-| Contemporaneous | coef=0.0003, **p=0.859** |
-| Lagged joint F, n=1 | p=0.815 |
-| n=2 | p=0.172 |
-| n=3 | p=0.161 |
-| n=4 | p=0.236 |
+| Test | Real-estate rotation | K-Index |
+|---|---|---|
+| N | 140 quarters (1990-2024) | 109 quarters (1998-2024) |
+| Contemporaneous | coef=0.0003, p=0.859 | coef=0.0236, **p=0.021** |
+| Lagged joint F, n=1 | p=0.815 | p=0.109 |
+| n=2 | p=0.172 | p=0.231 |
+| n=3 | p=0.161 | p=0.447 |
+| n=4 | p=0.236 | p=0.574 |
 
-**Clean null, and cleanly so** — no near-miss, no fragile one-lag pattern
-like the ones flagged elsewhere in this project. Boomers' real estate
-share of their own assets does not predict REIT basket returns, at any
-horizon tested. Full output: `output/reit_predictor_test_results.txt` and
+**Real-estate rotation is a clean null, cleanly so** — no near-miss, no
+fragile one-lag pattern. Boomers' real estate share of their own assets
+does not predict REIT basket returns, at any horizon tested.
+
+**K-Index's contemporaneous reading (p=0.021) looked like a real hit at
+first — the opposite pattern from the Treasury result (which is lagged,
+not contemporaneous)** — but it doesn't survive the same outlier check
+that the BEDI→LQD-SPY result survived. Using a pre-specified, objective
+rule (drop quarters where the REIT return itself exceeds 2 standard
+deviations — not hand-picked dates), 6 of 109 quarters get dropped: the
+2008Q4–2009Q3 financial crisis and the 2020Q1 COVID crash:
+
+| | Full sample | Ex-outliers (6 of 109 dropped) |
+|---|---|---|
+| Coefficient | 0.0236 | 0.0185 |
+| p-value | 0.021 | **0.075** |
+
+Removing under 6% of the sample — the handful of quarters where global
+financial crises hit both REITs and the wealth distribution at once —
+erases the significance entirely. **Read honestly, this is not a robust
+structural relationship; it's two series both reacting to the same
+macro shocks (2008–09, 2020) at the same time, not K leading REITs.**
+The lagged relationship (the more interesting "does K predict future REIT
+returns" question) is a clean null at every horizon regardless (p=0.11–0.57).
+
+This adds a third data point to the pattern already emerging across this
+project's asset-price tests: K's one **robust** relationship remains the
+lagged Treasury result (survives every lag length, no outlier-sensitivity
+issue reported there); REITs join the S&P 500, FX, and gold as targets
+where an initially-interesting reading did not hold up once tested
+properly. Full output: `output/reit_predictor_test_results.txt` and
 `output/reit_predictor_test_summary.csv`.
 
-**Next candidates**, not yet run: K-Index against this same REIT series
-(closes the one asset class K hasn't been tested against yet — stocks,
-Treasuries, FX, and gold are already done) and the isolated rotation
-signal, for completeness with the same 3-predictor pattern used against
-the long/short strategy above.
+**Next candidate**, not yet run: the isolated rotation signal
+(Boomer equity − safe-asset share) against this same REIT series, for
+completeness with the same 3-predictor pattern used against the long/short
+strategy above.
 
 ## Data & how to run it for real
 
