@@ -1,0 +1,14 @@
+Does the Boomer real-estate rotation signal predict REIT basket returns?
+Methodology: contemporaneous_and_lagged_test() -- two SEPARATE
+regressions (contemporaneous-only, lagged-only joint F-test),
+swept across lag lengths 1-4, same discipline as every other
+regression in this project.
+
+=== real_estate_rotation (Boomer real estate share of assets) ===
+  N = 140 quarters (1990-03-31 -> 2024-12-31)
+  contemporaneous: coef=0.0003, p=0.8587
+  n_lags=1: joint F=0.055, p=0.8146
+  n_lags=2: joint F=1.782, p=0.1721
+  n_lags=3: joint F=1.746, p=0.1605
+  n_lags=4: joint F=1.403, p=0.2363
+

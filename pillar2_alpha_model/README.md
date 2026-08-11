@@ -177,6 +177,43 @@ Full output: `output/strategy_predictor_test_results.txt` and
 combining this with the performance table above (`strategy_predictor_scorecard.py`)
 is saved at `output/strategy_predictor_scorecard.png`.
 
+## Does the Boomer real-estate rotation signal predict REIT returns?
+
+`reit_basket_quarterly.csv` (added to the repo root, 140 quarters
+1990Q1-2024Q4, single `reit_ret` column) is the first real, investable
+real-estate price series in this project — everything about Boomer real
+estate up to now was DFA dollar levels, never a tradeable return. That
+makes it the natural target for `real_estate_rotation()`, the most literal
+"are Boomers selling their homes" proxy built in this project, instead of
+testing it only against the (non-real-estate) long/short strategy basket.
+Note: the file has no composition/source documentation beyond its column
+name — treat this as "a REIT basket return series" pending confirmation of
+its exact source.
+
+Same methodology as everywhere else in this project — contemporaneous and
+lagged tested separately, swept across lags 1-4:
+
+| Test | Value |
+|---|---|
+| N | 140 quarters (1990-03-31 → 2024-12-31) |
+| Contemporaneous | coef=0.0003, **p=0.859** |
+| Lagged joint F, n=1 | p=0.815 |
+| n=2 | p=0.172 |
+| n=3 | p=0.161 |
+| n=4 | p=0.236 |
+
+**Clean null, and cleanly so** — no near-miss, no fragile one-lag pattern
+like the ones flagged elsewhere in this project. Boomers' real estate
+share of their own assets does not predict REIT basket returns, at any
+horizon tested. Full output: `output/reit_predictor_test_results.txt` and
+`output/reit_predictor_test_summary.csv`.
+
+**Next candidates**, not yet run: K-Index against this same REIT series
+(closes the one asset class K hasn't been tested against yet — stocks,
+Treasuries, FX, and gold are already done) and the isolated rotation
+signal, for completeness with the same 3-predictor pattern used against
+the long/short strategy above.
+
 ## Data & how to run it for real
 
 The model needs two free data sources: Yahoo Finance (via `yfinance`, for

@@ -1,0 +1,6 @@
+predictor,test,n_lags,coef_or_F,p_value
+real_estate_rotation (Boomer real estate share of assets),contemporaneous,0,0.0003241819186579353,0.8587069614955132
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,1,0.0552163173456909,0.8145713878118047
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,2,1.782279983271988,0.17213294099228996
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,3,1.7464099203395431,0.1605151062197709
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,4,1.4034213892498348,0.23627998334451322
