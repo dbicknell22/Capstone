@@ -1,0 +1,16 @@
+predictor,test,n_lags,coef_or_F,p_value
+rotation_signal (Boomer equity - safe-asset share),contemporaneous,0,-0.0007070058200486372,0.8677718232535698
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,1,1.0485014399534682,0.3081836365387548
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,2,0.6088179204796248,0.5459025012664389
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,3,1.5109593037877926,0.21606331307994844
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,4,1.1907434749506411,0.319380583713044
+K-Index,contemporaneous,0,-0.008329911467386117,0.5275382129687616
+K-Index,lagged_joint_F,1,0.34927489401897877,0.5557819871776696
+K-Index,lagged_joint_F,2,0.4494081979382538,0.6392270270820599
+K-Index,lagged_joint_F,3,0.7833760216364779,0.5058346711485663
+K-Index,lagged_joint_F,4,2.1516343432681433,0.07972261814984066
+real_estate_rotation (Boomer real estate share of assets),contemporaneous,0,0.001441856475051967,0.6074355127223281
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,1,0.14349716629643205,0.7055865010178747
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,2,0.0775429996303278,0.9254401747323012
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,3,0.16144501816370957,0.922060080934231
+real_estate_rotation (Boomer real estate share of assets),lagged_joint_F,4,0.13460502000575436,0.9692644699244732

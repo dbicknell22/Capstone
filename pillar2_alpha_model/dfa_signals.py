@@ -97,6 +97,25 @@ def k_shape_intensity() -> pd.DataFrame:
     return out.sort_index()
 
 
+def real_estate_rotation(generation: str = "BabyBoom") -> pd.DataFrame:
+    """The most literal 'are they selling their homes' proxy: `generation`'s
+    real estate holdings as a share of its own total assets (a level, same
+    convention as rotation_spread and K -- a level index predicting future
+    returns, not a rate), plus the raw QoQ % change in the dollar level as a
+    secondary check (a falling share can also just mean other assets grew
+    faster, not that real estate itself shrank; the dollar-level change
+    rules that out)."""
+    shares = generation_asset_shares(generation)
+    df = _load("dfa-generation-levels-detail.csv")
+    df = df[df["Category"] == generation].set_index("Date").sort_index()
+
+    out = pd.DataFrame(index=shares.index)
+    out["real_estate_share_pct"] = shares[f"{REAL_ESTATE_COL}_share_pct"]
+    out["real_estate_share_qoq_chg"] = out["real_estate_share_pct"].diff()
+    out["real_estate_usd_qoq_pct_chg"] = df[REAL_ESTATE_COL].pct_change()
+    return out
+
+
 def aggregate_equity_growth() -> pd.Series:
     """QoQ % growth in total household-sector equity holdings (summed across
     all 4 generations) — a real, data-grounded (if imperfect) market-value

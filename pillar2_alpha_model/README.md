@@ -127,6 +127,54 @@ regression) rather than failing outright when this file is missing.
 (`data_cache/*.csv` stays gitignored) per typical WRDS data-use agreements —
 only the resulting statistics and charts above are checked in.
 
+## Does the strategy's own return correlate with Boomer data or the K-Index?
+
+The result above tests one thing: is this specific basket profitable,
+unconditional on any signal. It says nothing about whether the Boomer
+thesis the basket is *based on* actually shows up statistically. That's a
+different, more direct question — and nothing in this project tested it
+until now. `strategy_predictor_test.py` regresses the strategy's own
+quarterly return (the monthly `long_short` series above, compounded to
+quarterly) against three real predictors, using the same
+contemporaneous/lagged-separated, lag-length-swept methodology as every
+other regression in this project:
+
+| Predictor | Contemporaneous p | n=1 | n=2 | n=3 | n=4 |
+|---|---|---|---|---|---|
+| Rotation signal (Boomer equity share − safe-asset share) | 0.868 | 0.308 | 0.546 | 0.216 | 0.319 |
+| K-Index | 0.528 | 0.556 | 0.639 | 0.506 | **0.080** |
+| Real-estate rotation (Boomer real estate share of assets) | 0.607 | 0.706 | 0.925 | 0.922 | 0.969 |
+
+**All three are clean nulls.** The rotation signal and real-estate
+rotation are null at every horizon, no fragile pattern. K-Index's 4-lag
+reading (p=0.080) is the only one that even approaches significance, and
+it does so at just one out of four lag lengths tried — the exact "only
+significant at one arbitrary lag choice" red flag this project has
+flagged elsewhere (USD/JPY, BEDI's structural break test) as a
+specification-mined result rather than a real one, not a finding to
+report as robust.
+
+**Read plainly: the demographic story behind this basket's ETF selection
+does not show up as a statistically detectable relationship in the
+basket's own returns**, whether tested against the raw Boomer rotation
+signal, the K-Index, or a literal "are they selling their homes" proxy.
+This is a different (and arguably more direct) test than the BEDI →
+LQD-SPY / K → Treasury results elsewhere in this project — those work on
+narrower, more targeted instrument pairs (credit vs. equity, Treasuries),
+while this basket is a broader multi-sector bet. The pattern across all of
+this project's tests together: K-shape/Boomer signals show real
+relationships with specific, narrowly-targeted rate-sensitive instruments
+(Treasuries, investment-grade credit spreads) but not with broader,
+multi-sector baskets like this one or with general asset prices.
+
+Caveats carried over from elsewhere in this project: K-Index here uses its
+only existing form (the full-sample z-score), the same mild look-ahead
+caveat every other K regression in this project already carries. The
+rotation signal and real-estate share are raw DFA levels, never
+normalized over any rolling window, so neither has a look-ahead concern.
+Full output: `output/strategy_predictor_test_results.txt` and
+`output/strategy_predictor_test_summary.csv`.
+
 ## Data & how to run it for real
 
 The model needs two free data sources: Yahoo Finance (via `yfinance`, for

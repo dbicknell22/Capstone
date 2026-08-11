@@ -1,0 +1,31 @@
+Does the Pillar 2 long/short strategy's own quarterly return
+correlate with Boomer-generation data or the K-Index?
+Methodology: contemporaneous_and_lagged_test() -- two SEPARATE
+regressions (contemporaneous-only, lagged-only joint F-test),
+swept across lag lengths 1-4, same discipline as every other
+regression in this project.
+
+=== rotation_signal (Boomer equity - safe-asset share) ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0007, p=0.8678
+  n_lags=1: joint F=1.049, p=0.3082
+  n_lags=2: joint F=0.609, p=0.5459
+  n_lags=3: joint F=1.511, p=0.2161
+  n_lags=4: joint F=1.191, p=0.3194
+
+=== K-Index ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0083, p=0.5275
+  n_lags=1: joint F=0.349, p=0.5558
+  n_lags=2: joint F=0.449, p=0.6392
+  n_lags=3: joint F=0.783, p=0.5058
+  n_lags=4: joint F=2.152, p=0.0797
+
+=== real_estate_rotation (Boomer real estate share of assets) ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=0.0014, p=0.6074
+  n_lags=1: joint F=0.143, p=0.7056
+  n_lags=2: joint F=0.078, p=0.9254
+  n_lags=3: joint F=0.161, p=0.9221
+  n_lags=4: joint F=0.135, p=0.9693
+
