@@ -180,6 +180,43 @@ actually earns alpha. Do not cite `output/SYNTHETIC_smoke_test.png` or its
 numbers in the deck; it only demonstrates the code runs and the math is
 correct. Real results require running `run_backtest.py` with data access.
 
+## "Are we entering uncharted territory?" — Artisan's generational-precedent question
+
+`generational_precedent_analysis.py` answers this directly, using data
+already in this repo (`dfa-generation-levels-detail.csv`) — no new sourcing
+needed. For each generation, `wealth_share ÷ household_share` gives a
+concentration ratio (1.0 = holding exactly its proportional share of
+wealth; above 1.0 = overrepresented).
+
+**Note on "Silent" in this data**: the Fed's category is really "everyone
+born before 1946" — a fixed cohort that only shrinks over the sample (no
+new members ever join it), not the narrower 1928-1945 academic definition.
+That turns out to be useful here: it traces one real cohort's concentration
+ratio from late-career through deep retirement and mortality-driven wealth
+transfer — the same arc Boomers are now entering, observed a generation
+earlier.
+
+**Result**: Baby Boomers' current ratio (1.73x, as of 2026:Q1) already
+exceeds the Silent Generation's entire all-time peak (1.66x, reached in
+1997) — and Boomers are still climbing, with no plateau yet. The shape of
+the two trajectories differs even more than the peak numbers: Silent's
+ratio held a stable plateau (1.5-1.66x) for nearly 24 years (1989-2013)
+before declining, while Boomers have climbed almost without interruption
+for 37 years and just kept going past where Silent's plateau sat. A
+generation-agnostic cross-check (the age-70-plus bracket, which avoids any
+ambiguity in exactly how "Silent" is defined) shows the same still-rising,
+not-yet-plateaued pattern independently.
+
+**Caveat, stated plainly**: Boomers have only partly aged into retirement
+(the youngest turn 65 in 2029) — this reading is an early-to-mid-transition
+snapshot, not Boomers' completed arc the way Silent's is fully observed.
+Fair to say Boomers already exceed Silent's peak; not yet fair to say how
+their full trajectory compares, since it hasn't finished.
+
+See `output/generational_precedent_ratio.png` (by generation),
+`output/generational_precedent_age70plus.png` (the cross-check), and
+`output/generational_precedent_summary.csv` for the full numbers.
+
 ## Known limitations / what to check once real numbers exist
 
 - **Sector ETFs are a proxy, not direct ownership data.** Pillar 2's ~70%
