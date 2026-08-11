@@ -1,0 +1,21 @@
+Lag-length robustness check: unemployment_rate (diff) and gdp (pct_chg)
+Run in response to advisor-requested econ-growth-as-function-of-K test.
+Methodology: contemporaneous_and_lagged_test() from regressions.py -- two
+SEPARATE regressions (contemporaneous-only, lagged-only joint F-test),
+never a combined model, to avoid the K/K_lag1 multicollinearity artifact
+documented elsewhere in this README (S&P 500, USD/JPY).
+
+=== unemployment_rate (diff) ===
+  n_lags=1: joint F=0.965, p=0.3282
+  n_lags=2: joint F=0.627, p=0.5362
+  n_lags=3: joint F=0.566, p=0.6384
+  n_lags=4: joint F=0.504, p=0.7329
+  contemporaneous: coef=-0.0854, p=0.4289
+
+=== gdp (pct_chg) ===
+  n_lags=1: joint F=0.308, p=0.5803
+  n_lags=2: joint F=1.005, p=0.3693
+  n_lags=3: joint F=1.205, p=0.3113
+  n_lags=4: joint F=1.096, p=0.3623
+  contemporaneous: coef=0.0001, p=0.9514
+

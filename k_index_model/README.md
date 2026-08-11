@@ -21,15 +21,16 @@ tests — was checked directly against the notebook's own printed output and
 matches (see "Validation" below). This is not a proxy or a rebuild that
 happens to look similar; it reproduces Pillar 1's original K-Index exactly.
 
-**Every regression the advisor asked for is still unrun.** They need real
-quarterly data for 9 series (stock index, 10Y Treasury total return,
-USD/JPY, USD/EUR, USD/GBP, gold, unemployment rate, GDP, industrial
-production), and this sandbox cannot fetch any of them — confirmed directly
-via `curl` against FRED, Yahoo Finance, Stooq, Alpha Vantage, an
-exchange-rate API, BLS, and BEA; all return a 403 from the network policy,
-not a code bug. Running `run_k_regressions.py` right now produces a clean
-"skipped" message per missing series rather than a fabricated result (see
-below) — the code is complete and correct, just waiting on data.
+**Eight of the nine advisor-requested regressions are run on real data.**
+Real quarterly data now exists for stock index, 10Y Treasury total return,
+USD/JPY, USD/EUR, USD/GBP, gold, unemployment rate, and GDP — supplied by
+the team (CRSP/WRDS pulls and FRED CSVs) after this sandbox proved unable
+to fetch any of them itself (confirmed directly via `curl` against FRED,
+Yahoo Finance, Stooq, Alpha Vantage, an exchange-rate API, BLS, and BEA;
+all return a 403 from the network policy, not a code bug). Only industrial
+production is still missing; `run_k_regressions.py` produces a clean
+"skipped" message for it rather than a fabricated result (see below) — the
+code is complete and correct, just waiting on that one series.
 
 ## Validation: all three pillars, and the full composite, are exact
 
@@ -188,22 +189,56 @@ robust relationship is specifically with interest-rate-sensitive assets
 stress → rate-cut expectations / flight to quality) rather than K being a
 generic "risk-on/risk-off" signal that should move everything at once.
 
+## Real results: does K explain economic growth? (unemployment, GDP)
+
+The second half of the advisor's ask — "estimate a model of econ growth
+(unemployment rate, GDP, and IP) as a function of K" — now has real data
+for two of its three series: `unemployment_rate.csv` (FRED `UNRATE`,
+regressed as a first difference, see the methodology note below) and
+`gdp.csv` (FRED `GDPC1`, regressed as a % change). `industrial_production.csv`
+(FRED `INDPRO`) is still the one missing series. Same lag-length robustness
+check applied to every target series in this project (saved to
+`output/econ_growth_robustness_check.txt`):
+
+| Target | Lagged joint F, n=1 | n=2 | n=3 | n=4 | Contemporaneous p | Robust? |
+|---|---|---|---|---|---|---|
+| Unemployment rate (Δ) | p=0.328 | p=0.536 | p=0.638 | p=0.733 | p=0.429 | No — null at every lag |
+| GDP (% chg) | p=0.580 | p=0.369 | p=0.311 | p=0.362 | p=0.951 | No — null at every lag |
+
+**Both are clean nulls, and cleanly so — no fragile one-lag pattern like
+USD/JPY's, just a flat, consistently-insignificant result across all four
+lag lengths tried for both series.** The combined model (`run_k_regressions.py`,
+`output/k_regressions_summary.txt`) shows GDP's contemporaneous K term at
+p=0.089 — worth a second look on its face, since it's the closest any
+econ-growth target has come to conventional significance — but the
+separated contemporaneous-only test puts it at p=0.951. This is the exact
+same multicollinearity artifact documented for the S&P 500 test above:
+`corr(K, K_lag1) = 0.918` means a combined model with K plus four lags can
+make one coefficient look significant purely from correlation with its own
+included lags, not from any real relationship with the target. Tested
+properly, there's nothing there.
+
+**Read together with the asset-price results, this sharpens the same
+pattern**: across eight of the nine advisor-requested target series now
+tested (Treasury, S&P 500, three FX pairs, gold, unemployment, GDP), K
+shows exactly one robust relationship — the lagged Treasury result — and
+seven clean or fragile nulls elsewhere. K does not show evidence of
+explaining, or being explained alongside, broader U.S. economic growth in
+this linear specification; its signal, such as it is, appears to be
+specific to interest-rate-sensitive assets rather than a general leading
+indicator of the real economy.
+
 ## What's needed to get real numbers
 
 **The K-Index itself needs nothing further** — it's complete and validated.
 
-**For the regressions**, drop CSVs (columns `Date,Value`, a
-level not a % change — the code computes the transform) into
+**For the regressions**, eight of the original nine target series are now
+real data. Only one is still outstanding — drop it (columns `Date,Value`,
+a level not a % change — the code computes the transform) into
 `k_index_model/data_cache/`:
 
 | File | Suggested source | Notes |
 |---|---|---|
-| `sp500.csv` | S&P 500 index level (or another broad index) | |
-| `treasury_10y_total_return.csv` | A real total-return series/index/ETF NAV | The constant-maturity *yield* (e.g. FRED `DGS10`) is not a total return and needs converting via duration first — a real total-return series is much cleaner if available |
-| `usdjpy.csv`, `usdeur.csv`, `usdgbp.csv` | Spot exchange rates | State which direction (USD per FX unit, or vice versa) in how the file's produced — just be consistent across the three |
-| `gold.csv` | USD/oz spot or futures | |
-| `unemployment_rate.csv` | U-3 rate (%) | Regressed as first-difference, not % change (see below) |
-| `gdp.csv` | Real GDP level (e.g. FRED `GDPC1`) | |
 | `industrial_production.csv` | IP index level (e.g. FRED `INDPRO`) | |
 
 Quarterly frequency to match K; monthly series (unemployment, IP, FX, gold)
