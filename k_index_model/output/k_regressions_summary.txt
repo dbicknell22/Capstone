@@ -6,7 +6,7 @@ Dep. Variable:                      y   R-squared:                       0.099
 Model:                            OLS   Adj. R-squared:                  0.055
 Method:                 Least Squares   F-statistic:                     2.525
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0337
-Time:                        17:36:58   Log-Likelihood:                 122.55
+Time:                        18:00:23   Log-Likelihood:                 122.55
 No. Observations:                 109   AIC:                            -233.1
 Df Residuals:                     103   BIC:                            -217.0
 Df Model:                           5                                         
@@ -37,7 +37,7 @@ Dep. Variable:                      y   R-squared:                       0.013
 Model:                            OLS   Adj. R-squared:                  0.003
 Method:                 Least Squares   F-statistic:                     1.679
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.198
-Time:                        17:36:58   Log-Likelihood:                 119.58
+Time:                        18:00:23   Log-Likelihood:                 119.58
 No. Observations:                 111   AIC:                            -235.2
 Df Residuals:                     109   BIC:                            -229.7
 Df Model:                           1                                         
@@ -64,7 +64,7 @@ Dep. Variable:                      y   R-squared:                       0.036
 Model:                            OLS   Adj. R-squared:                 -0.001
 Method:                 Least Squares   F-statistic:                     1.117
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.353
-Time:                        17:36:58   Log-Likelihood:                 118.86
+Time:                        18:00:23   Log-Likelihood:                 118.86
 No. Observations:                 109   AIC:                            -227.7
 Df Residuals:                     104   BIC:                            -214.3
 Df Model:                           4                                         
@@ -96,7 +96,7 @@ Dep. Variable:                      y   R-squared:                       0.156
 Model:                            OLS   Adj. R-squared:                  0.108
 Method:                 Least Squares   F-statistic:                     3.782
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):            0.00380
-Time:                        17:36:58   Log-Likelihood:                 185.42
+Time:                        18:00:23   Log-Likelihood:                 185.42
 No. Observations:                  93   AIC:                            -358.8
 Df Residuals:                      87   BIC:                            -343.6
 Df Model:                           5                                         
@@ -123,11 +123,11 @@ Notes:
 --- Contemporaneous only ---
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:                      y   R-squared:                       0.018
-Model:                            OLS   Adj. R-squared:                  0.007
+Dep. Variable:           Saved full regression output to output/k_regressions_summary.txt
+                       OLS   Adj. R-squared:                  0.007
 Method:                 Least Squares   F-statistic:                     1.259
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.265
-Time:                        17:36:58   Log-Likelihood:                 178.34
+Time:                        18:00:23   Log-Likelihood:                 178.34
 No. Observations:                  93   AIC:                            -352.7
 Df Residuals:                      91   BIC:                            -347.6
 Df Model:                           1                                         
@@ -154,7 +154,7 @@ Dep. Variable:                      y   R-squared:                       0.096
 Model:                            OLS   Adj. R-squared:                  0.055
 Method:                 Least Squares   F-statistic:                     3.169
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0175
-Time:                        17:36:58   Log-Likelihood:                 182.20
+Time:                        18:00:23   Log-Likelihood:                 182.20
 No. Observations:                  93   AIC:                            -354.4
 Df Residuals:                      88   BIC:                            -341.7
 Df Model:                           4                                         
@@ -186,7 +186,7 @@ Dep. Variable:                      y   R-squared:                       0.126
 Model:                            OLS   Adj. R-squared:                  0.063
 Method:                 Least Squares   F-statistic:                     3.277
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0103
-Time:                        17:36:58   Log-Likelihood:                 112.37
+Time:                        18:00:23   Log-Likelihood:                 112.37
 No. Observations:                  75   AIC:                            -212.7
 Df Residuals:                      69   BIC:                            -198.8
 Df Model:                           5                                         
@@ -217,7 +217,7 @@ Dep. Variable:                      y   R-squared:                       0.004
 Model:                            OLS   Adj. R-squared:                 -0.010
 Method:                 Least Squares   F-statistic:                    0.3260
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.570
-Time:                        17:36:58   Log-Likelihood:                 107.46
+Time:                        18:00:23   Log-Likelihood:                 107.46
 No. Observations:                  75   AIC:                            -210.9
 Df Residuals:                      73   BIC:                            -206.3
 Df Model:                           1                                         
@@ -244,7 +244,7 @@ Dep. Variable:                      y   R-squared:                       0.102
 Model:                            OLS   Adj. R-squared:                  0.050
 Method:                 Least Squares   F-statistic:                     3.493
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0117
-Time:                        17:36:58   Log-Likelihood:                 111.33
+Time:                        18:00:23   Log-Likelihood:                 111.33
 No. Observations:                  75   AIC:                            -212.7
 Df Residuals:                      70   BIC:                            -201.1
 Df Model:                           4                                         
@@ -276,7 +276,7 @@ Dep. Variable:                      y   R-squared:                       0.055
 Model:                            OLS   Adj. R-squared:                 -0.009
 Method:                 Least Squares   F-statistic:                     1.091
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.372
-Time:                        17:36:58   Log-Likelihood:                 134.92
+Time:                        18:00:23   Log-Likelihood:                 134.92
 No. Observations:                  80   AIC:                            -257.8
 Df Residuals:                      74   BIC:                            -243.5
 Df Model:                           5                                         
@@ -307,7 +307,7 @@ Dep. Variable:                      y   R-squared:                       0.004
 Model:                            OLS   Adj. R-squared:                 -0.009
 Method:                 Least Squares   F-statistic:                    0.3414
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.561
-Time:                        17:36:58   Log-Likelihood:                 132.83
+Time:                        18:00:23   Log-Likelihood:                 132.83
 No. Observations:                  80   AIC:                            -261.7
 Df Residuals:                      78   BIC:                            -256.9
 Df Model:                           1                                         
@@ -334,7 +334,7 @@ Dep. Variable:                      y   R-squared:                       0.049
 Model:                            OLS   Adj. R-squared:                 -0.002
 Method:                 Least Squares   F-statistic:                     1.284
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.284
-Time:                        17:36:58   Log-Likelihood:                 134.69
+Time:                        18:00:23   Log-Likelihood:                 134.69
 No. Observations:                  80   AIC:                            -259.4
 Df Residuals:                      75   BIC:                            -247.5
 Df Model:                           4                                         
@@ -366,7 +366,7 @@ Dep. Variable:                      y   R-squared:                       0.091
 Model:                            OLS   Adj. R-squared:                  0.028
 Method:                 Least Squares   F-statistic:                     1.420
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.228
-Time:                        17:36:58   Log-Likelihood:                 130.34
+Time:                        18:00:23   Log-Likelihood:                 130.34
 No. Observations:                  78   AIC:                            -248.7
 Df Residuals:                      72   BIC:                            -234.5
 Df Model:                           5                                         
@@ -397,7 +397,7 @@ Dep. Variable:                      y   R-squared:                       0.008
 Model:                            OLS   Adj. R-squared:                 -0.005
 Method:                 Least Squares   F-statistic:                    0.6746
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.414
-Time:                        17:36:58   Log-Likelihood:                 126.93
+Time:                        18:00:23   Log-Likelihood:                 126.93
 No. Observations:                  78   AIC:                            -249.9
 Df Residuals:                      76   BIC:                            -245.1
 Df Model:                           1                                         
@@ -424,7 +424,7 @@ Dep. Variable:                      y   R-squared:                       0.070
 Model:                            OLS   Adj. R-squared:                  0.019
 Method:                 Least Squares   F-statistic:                     1.719
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.155
-Time:                        17:36:58   Log-Likelihood:                 129.47
+Time:                        18:00:23   Log-Likelihood:                 129.47
 No. Observations:                  78   AIC:                            -248.9
 Df Residuals:                      73   BIC:                            -237.2
 Df Model:                           4                                         
@@ -456,7 +456,7 @@ Dep. Variable:                      y   R-squared:                       0.054
 Model:                            OLS   Adj. R-squared:                 -0.006
 Method:                 Least Squares   F-statistic:                     1.407
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.231
-Time:                        17:36:58   Log-Likelihood:                 103.17
+Time:                        18:00:23   Log-Likelihood:                 103.17
 No. Observations:                  84   AIC:                            -194.3
 Df Residuals:                      78   BIC:                            -179.7
 Df Model:                           5                                         
@@ -487,7 +487,7 @@ Dep. Variable:                      y   R-squared:                       0.000
 Model:                            OLS   Adj. R-squared:                 -0.012
 Method:                 Least Squares   F-statistic:                  0.003322
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.954
-Time:                        17:36:58   Log-Likelihood:                 100.81
+Time:                        18:00:23   Log-Likelihood:                 100.81
 No. Observations:                  84   AIC:                            -197.6
 Df Residuals:                      82   BIC:                            -192.8
 Df Model:                           1                                         
@@ -514,7 +514,7 @@ Dep. Variable:                      y   R-squared:                       0.054
 Model:                            OLS   Adj. R-squared:                  0.006
 Method:                 Least Squares   F-statistic:                     1.769
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.143
-Time:                        17:36:58   Log-Likelihood:                 103.15
+Time:                        18:00:23   Log-Likelihood:                 103.15
 No. Observations:                  84   AIC:                            -196.3
 Df Residuals:                      79   BIC:                            -184.2
 Df Model:                           4                                         
@@ -546,7 +546,7 @@ Dep. Variable:                      y   R-squared:                       0.008
 Model:                            OLS   Adj. R-squared:                 -0.040
 Method:                 Least Squares   F-statistic:                    0.4447
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.816
-Time:                        17:36:58   Log-Likelihood:                -128.82
+Time:                        18:00:23   Log-Likelihood:                -128.82
 No. Observations:                 110   AIC:                             269.6
 Df Residuals:                     104   BIC:                             285.8
 Df Model:                           5                                         
@@ -577,7 +577,7 @@ Dep. Variable:                      y   R-squared:                       0.006
 Model:                            OLS   Adj. R-squared:                 -0.003
 Method:                 Least Squares   F-statistic:                    0.6259
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.431
-Time:                        17:36:58   Log-Likelihood:                -131.65
+Time:                        18:00:23   Log-Likelihood:                -131.65
 No. Observations:                 114   AIC:                             267.3
 Df Residuals:                     112   BIC:                             272.8
 Df Model:                           1                                         
@@ -604,7 +604,7 @@ Dep. Variable:                      y   R-squared:                       0.007
 Model:                            OLS   Adj. R-squared:                 -0.030
 Method:                 Least Squares   F-statistic:                    0.5040
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.733
-Time:                        17:36:58   Log-Likelihood:                -129.51
+Time:                        18:00:23   Log-Likelihood:                -129.51
 No. Observations:                 111   AIC:                             269.0
 Df Residuals:                     106   BIC:                             282.6
 Df Model:                           4                                         
@@ -636,7 +636,7 @@ Dep. Variable:                      y   R-squared:                       0.024
 Model:                            OLS   Adj. R-squared:                 -0.023
 Method:                 Least Squares   F-statistic:                     1.955
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0916
-Time:                        17:36:58   Log-Likelihood:                 330.28
+Time:                        18:00:23   Log-Likelihood:                 330.28
 No. Observations:                 110   AIC:                            -648.6
 Df Residuals:                     104   BIC:                            -632.3
 Df Model:                           5                                         
@@ -667,7 +667,7 @@ Dep. Variable:                      y   R-squared:                       0.000
 Model:                            OLS   Adj. R-squared:                 -0.009
 Method:                 Least Squares   F-statistic:                  0.003716
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.952
-Time:                        17:36:58   Log-Likelihood:                 342.67
+Time:                        18:00:23   Log-Likelihood:                 342.67
 No. Observations:                 114   AIC:                            -681.3
 Df Residuals:                     112   BIC:                            -675.9
 Df Model:                           1                                         
@@ -694,7 +694,7 @@ Dep. Variable:                      y   R-squared:                       0.011
 Model:                            OLS   Adj. R-squared:                 -0.026
 Method:                 Least Squares   F-statistic:                     1.096
 Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.362
-Time:                        17:36:58   Log-Likelihood:                 333.05
+Time:                        18:00:23   Log-Likelihood:                 333.05
 No. Observations:                 111   AIC:                            -656.1
 Df Residuals:                     106   BIC:                            -642.6
 Df Model:                           4                                         
@@ -712,6 +712,96 @@ Omnibus:                       76.055   Durbin-Watson:                   2.386
 Prob(Omnibus):                  0.000   Jarque-Bera (JB):             4321.063
 Skew:                          -1.310   Prob(JB):                         0.00
 Kurtosis:                      33.454   Cond. No.                         7.52
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+
+=== industrial_production_pct_chg ===
+--- Combined ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.090
+Model:                            OLS   Adj. R-squared:                  0.046
+Method:                 Least Squares   F-statistic:                     2.628
+Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0280
+Time:                        18:00:23   Log-Likelihood:                 306.98
+No. Observations:                 110   AIC:                            -602.0
+Df Residuals:                     104   BIC:                            -585.8
+Df Model:                           5                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0013      0.002      0.737      0.461      -0.002       0.005
+K              0.0086      0.004      2.084      0.037       0.001       0.017
+K_lag1         0.0016      0.006      0.273      0.785      -0.010       0.013
+K_lag2        -0.0035      0.006     -0.612      0.540      -0.015       0.008
+K_lag3         0.0058      0.004      1.305      0.192      -0.003       0.014
+K_lag4        -0.0098      0.005     -1.800      0.072      -0.020       0.001
+==============================================================================
+Omnibus:                       32.194   Durbin-Watson:                   1.450
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               98.422
+Skew:                          -0.986   Prob(JB):                     4.25e-22
+Kurtosis:                       7.194   Cond. No.                         8.72
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+--- Contemporaneous only ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.024
+Model:                            OLS   Adj. R-squared:                  0.015
+Method:                 Least Squares   F-statistic:                     3.613
+Date:                Tue, 11 Aug 2026   Prob (F-statistic):             0.0599
+Time:                        18:00:23   Log-Likelihood:                 314.92
+No. Observations:                 114   AIC:                            -625.8
+Df Residuals:                     112   BIC:                            -620.4
+Df Model:                           1                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0020      0.002      1.081      0.280      -0.002       0.006
+K              0.0035      0.002      1.901      0.057      -0.000       0.007
+==============================================================================
+Omnibus:                       41.158   Durbin-Watson:                   1.368
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              135.352
+Skew:                          -1.240   Prob(JB):                     4.06e-30
+Kurtosis:                       7.727   Cond. No.                         1.48
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity and autocorrelation robust (HAC) using 3 lags and without small sample correction
+
+--- Lagged only ---
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.070
+Model:                            OLS   Adj. R-squared:                  0.035
+Method:                 Least Squares   F-statistic:                     1.568
+Date:                Tue, 11 Aug 2026   Prob (F-statistic):              0.188
+Time:                        18:00:23   Log-Likelihood:                 308.94
+No. Observations:                 111   AIC:                            -607.9
+Df Residuals:                     106   BIC:                            -594.3
+Df Model:                           4                                         
+Covariance Type:                  HAC                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0015      0.002      0.825      0.410      -0.002       0.005
+K_lag1         0.0084      0.006      1.457      0.145      -0.003       0.020
+K_lag2        -0.0012      0.005     -0.230      0.818      -0.012       0.009
+K_lag3         0.0049      0.005      1.077      0.282      -0.004       0.014
+K_lag4        -0.0103      0.005     -1.897      0.058      -0.021       0.000
+==============================================================================
+Omnibus:                       32.527   Durbin-Watson:                   1.464
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               94.229
+Skew:                          -1.014   Prob(JB):                     3.46e-21
+Kurtosis:                       7.032   Cond. No.                         7.52
 ==============================================================================
 
 Notes:

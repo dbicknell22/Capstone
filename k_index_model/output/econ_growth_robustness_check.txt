@@ -19,3 +19,18 @@ documented elsewhere in this README (S&P 500, USD/JPY).
   n_lags=4: joint F=1.096, p=0.3623
   contemporaneous: coef=0.0001, p=0.9514
 
+Lag-length robustness check: industrial_production (pct_chg)
+Run in response to advisor-requested econ-growth-as-function-of-K test
+(3rd and final series -- unemployment, GDP, IP -- now all real data).
+Methodology: contemporaneous_and_lagged_test() from regressions.py -- two
+SEPARATE regressions (contemporaneous-only, lagged-only joint F-test),
+never a combined model, to avoid the K/K_lag1 multicollinearity artifact
+documented elsewhere in this README (S&P 500, USD/JPY, GDP).
+
+=== industrial_production (pct_chg) ===
+  n_lags=1: joint F=2.604, p=0.1094
+  n_lags=2: joint F=1.758, p=0.1772
+  n_lags=3: joint F=1.157, p=0.3295
+  n_lags=4: joint F=1.568, p=0.1883
+  contemporaneous: coef=0.0035, p=0.0573
+

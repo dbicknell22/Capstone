@@ -21,16 +21,14 @@ tests — was checked directly against the notebook's own printed output and
 matches (see "Validation" below). This is not a proxy or a rebuild that
 happens to look similar; it reproduces Pillar 1's original K-Index exactly.
 
-**Eight of the nine advisor-requested regressions are run on real data.**
-Real quarterly data now exists for stock index, 10Y Treasury total return,
-USD/JPY, USD/EUR, USD/GBP, gold, unemployment rate, and GDP — supplied by
-the team (CRSP/WRDS pulls and FRED CSVs) after this sandbox proved unable
-to fetch any of them itself (confirmed directly via `curl` against FRED,
-Yahoo Finance, Stooq, Alpha Vantage, an exchange-rate API, BLS, and BEA;
-all return a 403 from the network policy, not a code bug). Only industrial
-production is still missing; `run_k_regressions.py` produces a clean
-"skipped" message for it rather than a fabricated result (see below) — the
-code is complete and correct, just waiting on that one series.
+**All nine advisor-requested regressions are now run on real data.** Real
+quarterly data exists for stock index, 10Y Treasury total return, USD/JPY,
+USD/EUR, USD/GBP, gold, unemployment rate, GDP, and industrial production —
+supplied by the team (CRSP/WRDS pulls and FRED CSVs) after this sandbox
+proved unable to fetch any of them itself (confirmed directly via `curl`
+against FRED, Yahoo Finance, Stooq, Alpha Vantage, an exchange-rate API,
+BLS, and BEA; all return a 403 from the network policy, not a code bug).
+See "Real results" below for the full set of findings.
 
 ## Validation: all three pillars, and the full composite, are exact
 
@@ -193,56 +191,63 @@ generic "risk-on/risk-off" signal that should move everything at once.
 
 The second half of the advisor's ask — "estimate a model of econ growth
 (unemployment rate, GDP, and IP) as a function of K" — now has real data
-for two of its three series: `unemployment_rate.csv` (FRED `UNRATE`,
-regressed as a first difference, see the methodology note below) and
-`gdp.csv` (FRED `GDPC1`, regressed as a % change). `industrial_production.csv`
-(FRED `INDPRO`) is still the one missing series. Same lag-length robustness
-check applied to every target series in this project (saved to
-`output/econ_growth_robustness_check.txt`):
+for all three series: `unemployment_rate.csv` (FRED `UNRATE`, regressed as
+a first difference, see the methodology note below), `gdp.csv` (FRED
+`GDPC1`, % change), and `industrial_production.csv` (FRED `INDPRO`, %
+change). Same lag-length robustness check applied to every target series
+in this project (saved to `output/econ_growth_robustness_check.txt`):
 
 | Target | Lagged joint F, n=1 | n=2 | n=3 | n=4 | Contemporaneous p | Robust? |
 |---|---|---|---|---|---|---|
 | Unemployment rate (Δ) | p=0.328 | p=0.536 | p=0.638 | p=0.733 | p=0.429 | No — null at every lag |
 | GDP (% chg) | p=0.580 | p=0.369 | p=0.311 | p=0.362 | p=0.951 | No — null at every lag |
+| Industrial production (% chg) | p=0.109 | p=0.177 | p=0.330 | p=0.188 | **p=0.057** | No — lags null at every horizon; contemporaneous close but short of 5% |
 
-**Both are clean nulls, and cleanly so — no fragile one-lag pattern like
-USD/JPY's, just a flat, consistently-insignificant result across all four
-lag lengths tried for both series.** The combined model (`run_k_regressions.py`,
-`output/k_regressions_summary.txt`) shows GDP's contemporaneous K term at
-p=0.089 — worth a second look on its face, since it's the closest any
-econ-growth target has come to conventional significance — but the
-separated contemporaneous-only test puts it at p=0.951. This is the exact
-same multicollinearity artifact documented for the S&P 500 test above:
-`corr(K, K_lag1) = 0.918` means a combined model with K plus four lags can
-make one coefficient look significant purely from correlation with its own
-included lags, not from any real relationship with the target. Tested
-properly, there's nothing there.
+**Unemployment and GDP are clean nulls, and cleanly so** — no fragile
+one-lag pattern like USD/JPY's, just a flat, consistently-insignificant
+result across all four lag lengths tried for both series. The combined
+model (`run_k_regressions.py`, `output/k_regressions_summary.txt`) shows
+GDP's contemporaneous K term at p=0.089 — worth a second look on its face,
+since it looked like the closest econ-growth target to conventional
+significance — but the separated contemporaneous-only test puts it at
+p=0.951. This is the exact same multicollinearity artifact documented for
+the S&P 500 test above: `corr(K, K_lag1) = 0.918` means a combined model
+with K plus four lags can make one coefficient look significant purely
+from correlation with its own included lags, not from any real
+relationship with the target. Tested properly, there's nothing there.
 
-**Read together with the asset-price results, this sharpens the same
-pattern**: across eight of the nine advisor-requested target series now
-tested (Treasury, S&P 500, three FX pairs, gold, unemployment, GDP), K
-shows exactly one robust relationship — the lagged Treasury result — and
-seven clean or fragile nulls elsewhere. K does not show evidence of
-explaining, or being explained alongside, broader U.S. economic growth in
-this linear specification; its signal, such as it is, appears to be
-specific to interest-rate-sensitive assets rather than a general leading
-indicator of the real economy.
+**Industrial production is the genuinely closest call of the three, and
+worth reading carefully rather than rounding to "null."** Its combined
+model shows K significant at p=0.037 — but separated properly, the
+contemporaneous-only test comes in at p=0.057, just short of the
+conventional 5% threshold (not a multicollinearity artifact this time —
+the combined and separated readings are close to each other, 0.037 vs.
+0.057, not the order-of-magnitude gap GDP showed). The lagged relationship
+is a clean null at every lag length (p=0.11-0.33, no fragile one-lag
+pattern). **Read honestly: IP is a borderline, not-quite-significant
+contemporaneous result with no lagged effect** — directionally consistent
+with the "widening K → economy softens somewhat" story, closer to
+significance than unemployment or GDP, but it does not clear the bar this
+project has used everywhere else, and shouldn't be reported as a finding.
+
+**Read together with the asset-price results, this closes out all nine of
+the advisor-requested target series.** K shows exactly one robust
+relationship across all nine — the lagged Treasury result — one borderline,
+not-quite-significant contemporaneous reading (industrial production), and
+seven clean or fragile nulls elsewhere (S&P 500, USD/JPY, USD/EUR, USD/GBP,
+gold, unemployment, GDP). K does not show broad evidence of explaining, or
+being explained alongside, U.S. economic growth or asset prices generally
+in this linear specification; its one real signal appears specific to
+interest-rate-sensitive assets (Treasuries) rather than a general leading
+indicator of the real economy or a broad risk-on/risk-off signal.
 
 ## What's needed to get real numbers
 
 **The K-Index itself needs nothing further** — it's complete and validated.
 
-**For the regressions**, eight of the original nine target series are now
-real data. Only one is still outstanding — drop it (columns `Date,Value`,
-a level not a % change — the code computes the transform) into
-`k_index_model/data_cache/`:
-
-| File | Suggested source | Notes |
-|---|---|---|
-| `industrial_production.csv` | IP index level (e.g. FRED `INDPRO`) | |
-
-Quarterly frequency to match K; monthly series (unemployment, IP, FX, gold)
-get resampled to quarter-end automatically by `target_data.py`.
+**All nine of the original target series are now real data** — every
+regression the advisor asked for has run. Nothing further is needed for
+this section; see "Running it" below to reproduce.
 
 **A methodology note on unemployment:** the advisor's brief says "percentage
 change" for all the market variables, but for a rate like unemployment
