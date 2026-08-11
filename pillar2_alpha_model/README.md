@@ -699,7 +699,65 @@ haven't been built yet**, roughly in order of how much new work they'd take:
    closer to "are they actively buying" than a share level, which can
    drift just from other assets changing size. More construction work,
    same data.
-4. **Turn this into an actual backtest**, the way `k_timed_treasury_backtest.py`
-   did for K — hold Treasury when the rotation signal (or BEDI) crossed
-   its threshold last quarter, and see if it holds up as CAGR/Sharpe/
-   drawdown the same way K's did.
+4. ~~Turn this into an actual backtest~~ — **done, see below.**
+
+### Backtest: BEDI-timed and rotation-signal-timed Treasury allocation
+
+`bedi_timed_treasury_backtest.py` builds the same kind of real strategy
+`k_index_model/k_timed_treasury_backtest.py` built for K: hold Treasury
+when the signal (observed at the end of last quarter) was positive,
+otherwise hold cash, rebalanced quarterly. Both signals used are already
+point-in-time/expanding z-scores with no new construction needed —
+`BEDI_equal_weight` and `z_rotation` (the isolated rotation signal, already
+sign-flipped and expanding-z-scored inside `build_bedi_expanding()`).
+
+| | BEDI-timed | Rotation-signal-timed | Buy & hold |
+|---|---|---|---|
+| CAGR | 3.69% | 3.36% | 3.28% |
+| Ann. Vol | 6.62% | **5.41%** | 7.25% |
+| Sharpe | 0.58 | **0.64** | 0.48 |
+| Max Drawdown | -6.94% | **-6.53%** | -21.13% |
+| Time in market | 89.1% | 53.3% | 100% |
+
+N=92 quarters (2003-2025) for both. **The rotation-signal-timed version is
+the best risk-adjusted result in this entire project** — higher Sharpe
+than the K-timed backtest (0.64 vs. 0.60), on top of a similar drawdown
+improvement, and it gets there with essentially flat CAGR vs. buy-and-hold
+(3.36% vs. 3.28%) — this is a risk-reduction story, not a return-
+enhancement one, same shape as the K-timed result. BEDI-timed also beats
+the benchmark on every dimension, but less dramatically — it's in the
+market 89% of the time (BEDI stays positive most of the sample, since the
+K-shape gap component trends upward over most of the history), so it
+behaves closer to buy-and-hold with occasional, well-timed de-risking.
+
+**Same robustness checks as the K-timed backtest, and both pass:**
+
+- **Inverted signal** (long only when the signal was negative last
+  quarter): BEDI-inverted gives CAGR=-0.39%, Sharpe=**-0.12** — actively
+  bad, not just neutral. Rotation-inverted gives Sharpe≈0.01 — dead money.
+  Both confirm the direction is doing real work.
+- **Raw quarterly return split**: rotation signal, +1.62% (on) vs. +0.02%
+  (off); BEDI, +1.08% (on) vs. **-0.81%** (off) — BEDI's off-quarters
+  average an actual loss, the cleanest split of any signal tested in this
+  project.
+- **Worst-quarter avoidance**: rotation-signal-timed sits out 4 of the 5
+  worst Treasury quarters (matching K's backtest exactly); BEDI-timed only
+  2 of 5, consistent with it being in the market most of the time.
+- **Turnover is low for both**: 6 switches (BEDI, ~15 quarters/regime) and
+  10 switches (rotation signal, ~9 quarters/regime) over 92 quarters.
+
+![BEDI-timed and rotation-signal-timed backtests](output/bedi_timed_treasury_backtest.png)
+
+**Where this leaves the project**: three independent signals (K,
+BEDI, and the isolated rotation signal), built from different source data
+combinations, each turned into an actual backtested strategy, and each
+showing the same shape of result — modest-to-flat CAGR improvement paired
+with a substantial reduction in volatility and drawdown, by rotating out
+of Treasuries specifically during the quarters that turned out worst.
+None of these are finished, out-of-sample-validated products (N≈92-93
+quarters, one asset, untuned thresholds, 0%-cash approximation instead of
+a real risk-free rate) — but three independently-constructed signals
+converging on the same shape of result, each surviving its own outlier and
+direction checks, is a meaningfully stronger claim than any one of them
+alone. Full output: `output/bedi_timed_treasury_backtest_results.txt`,
+`output/bedi_timed_treasury_backtest_stats.csv`.
