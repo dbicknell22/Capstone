@@ -627,3 +627,79 @@ is not yet a finished result: no out-of-sample validation, no risk-factor
 controls (Fama-French still missing), and N=93 quarters is a moderate
 sample for a claim this specific. Treat it as the most promising lead in
 this project, not as a proven strategy.
+
+### Closing the loop: BEDI (and the isolated rotation signal) directly against the 10Y Treasury
+
+BEDI had been tested against LQD-SPY and XLV-XLY, and the isolated
+rotation signal against the long/short strategy and REIT returns — but
+neither had been tested against the 10Y Treasury directly, the one
+instrument K itself has a robust relationship with
+(`k_index_model/README.md`). `bedi_treasury_test.py` fills that gap, using
+BEDI's point-in-time/expanding version (no look-ahead) and the same
+contemporaneous/lagged-separated, lag-swept methodology as everywhere
+else:
+
+| | Contemporaneous | n=1 | n=2 | n=3 | n=4 |
+|---|---|---|---|---|---|
+| BEDI (expanding) | p=0.158 | **p=0.012** | **p=0.021** | **p=0.029** | p=0.060 |
+| Rotation signal alone | p=0.362 | **p=0.015** | **p=0.020** | **p=0.015** | **p=0.034** |
+
+**Both clear this project's own bar for "robust"** — significant (or
+nearly so) at every lag length tried, 1 through 4, not just one arbitrary
+choice, the same signature that made the K→Treasury result trustworthy in
+the first place. Both are null contemporaneously, significant only with a
+lag — the effect is Boomers' behavior *this* quarter predicting Treasury
+returns *next* quarter, not a same-quarter co-movement.
+
+**Outlier check (same objective >2-std rule as elsewhere): survives.**
+Dropping the 4 quarters where Treasury returns themselves were most
+extreme (2008Q4, 2010Q2, 2011Q3, 2020Q1):
+
+| | Full sample | Ex-outliers (4 of 93 dropped) |
+|---|---|---|
+| Rotation signal, coef / p | -0.0046 / 0.013 | -0.0041 / 0.016 |
+| BEDI, coef / p | 0.0159 / 0.011 | 0.0123 / 0.042 |
+
+Neither loses significance — a meaningfully cleaner result than the
+REIT/K-Index contemporaneous reading (`k_index_model/README.md`), which
+*did* fail this exact check.
+
+**Economically, the direction makes sense and is internally consistent**:
+rotation_signal's coefficient is negative — as Boomers' equity-minus-safe-
+asset spread *falls* (they rotate toward safety), Treasury returns rise
+next quarter. BEDI's coefficient is positive, which says the same thing
+through BEDI's sign-flipped convention (BEDI rises when Boomers de-risk).
+Both agree with each other, and both agree with K's independent finding.
+
+**This is now the third independent corroboration of the same story** —
+K → Treasury (k_index_model), BEDI → LQD-SPY (above), and now BEDI/rotation
+signal → Treasury directly, from three different constructions of
+"Boomer/wealth-divergence signal" against two different (but related)
+fixed-income instruments. Full output: `output/bedi_treasury_test_results.txt`,
+`output/bedi_treasury_test_summary.csv`.
+
+**Ideas for other ways to measure "Boomer rotation into fixed income" that
+haven't been built yet**, roughly in order of how much new work they'd take:
+
+1. **The raw Boomer safe-asset share level** (not the equity-minus-safe
+   spread) — `generation_asset_shares()` already computes this column
+   (`safe_share_pct`), it's just never been pulled out and tested on its
+   own. A rising level is the most literal "how much of their portfolio is
+   now parked in safety," separate from what's happening to their equity
+   side. Trivial to test — no new construction needed.
+2. **A "true fixed income" share, excluding cash-like assets** —
+   `SAFE_COLS` currently bundles deposits and money-market funds (cash
+   equivalents) together with actual bonds (`U.S. government and municipal
+   securities`, `Corporate and foreign bonds`) and annuities. Splitting
+   out just the two bond columns would isolate literal fixed-income-
+   security exposure from cash-parking, which are arguably different
+   behaviors (defensive cash buildup vs. actually buying duration).
+3. **A real Boomer bond-buying *flow* measure** (QoQ change in the bond
+   columns' dollar level, not just their share of a shifting total) —
+   closer to "are they actively buying" than a share level, which can
+   drift just from other assets changing size. More construction work,
+   same data.
+4. **Turn this into an actual backtest**, the way `k_timed_treasury_backtest.py`
+   did for K — hold Treasury when the rotation signal (or BEDI) crossed
+   its threshold last quarter, and see if it holds up as CAGR/Sharpe/
+   drawdown the same way K's did.

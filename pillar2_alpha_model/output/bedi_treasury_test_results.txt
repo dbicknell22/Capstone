@@ -1,0 +1,28 @@
+Does BEDI, or the isolated rotation signal, predict the 10Y Treasury return?
+Methodology: contemporaneous_and_lagged_test() -- two SEPARATE
+regressions (contemporaneous-only, lagged-only joint F-test),
+swept across lag lengths 1-4, same discipline as every other
+regression in this project.
+
+=== BEDI (expanding, equal-weight) ===
+  N = 93 quarters (2002-12-31 -> 2025-12-31)
+  contemporaneous: coef=0.0106, p=0.1582
+  n_lags=1: joint F=6.634, p=0.0116
+  n_lags=2: joint F=4.034, p=0.0210
+  n_lags=3: joint F=3.143, p=0.0291
+  n_lags=4: joint F=2.352, p=0.0601
+  outlier-robustness check on n_lags=1 (4 quarters with |Treasury return| > 2 std dropped): ['2008-12-31', '2010-06-30', '2011-09-30', '2020-03-31']
+    full sample:  coef=0.0159, p=0.0107 (N=92)
+    ex-outliers:  coef=0.0123, p=0.0420 (N=88)
+
+=== rotation_signal (Boomer equity - safe-asset share) ===
+  N = 93 quarters (2002-12-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0022, p=0.3622
+  n_lags=1: joint F=6.174, p=0.0148
+  n_lags=2: joint F=4.071, p=0.0203
+  n_lags=3: joint F=3.658, p=0.0154
+  n_lags=4: joint F=2.729, p=0.0341
+  outlier-robustness check on n_lags=1 (4 quarters with |Treasury return| > 2 std dropped): ['2008-12-31', '2010-06-30', '2011-09-30', '2020-03-31']
+    full sample:  coef=-0.0046, p=0.0126 (N=92)
+    ex-outliers:  coef=-0.0041, p=0.0159 (N=88)
+

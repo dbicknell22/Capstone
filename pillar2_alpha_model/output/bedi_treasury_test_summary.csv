@@ -1,0 +1,13 @@
+predictor,test,n_lags,coef_or_F,p_value
+"BEDI (expanding, equal-weight)",contemporaneous,0,0.010566893550027169,0.1581560986027014
+"BEDI (expanding, equal-weight)",lagged_joint_F,1,6.634056126474382,0.011616345435080106
+"BEDI (expanding, equal-weight)",lagged_joint_F,2,4.033509053929284,0.021007737039359653
+"BEDI (expanding, equal-weight)",lagged_joint_F,3,3.1431131904479,0.02912882992919338
+"BEDI (expanding, equal-weight)",lagged_joint_F,4,2.3521561144306564,0.06013187108023319
+"BEDI (expanding, equal-weight)",lag1_ex_outliers,1,0.012259080621939356,0.042027333689344804
+rotation_signal (Boomer equity - safe-asset share),contemporaneous,0,-0.00222040116084901,0.36224642129655493
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,1,6.173608764525012,0.014795487483402646
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,2,4.070728097725454,0.02030254731574916
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,3,3.65835871320645,0.015407821322278536
+rotation_signal (Boomer equity - safe-asset share),lagged_joint_F,4,2.7287124432098806,0.03414090304186172
+rotation_signal (Boomer equity - safe-asset share),lag1_ex_outliers,1,-0.004149543847606255,0.015871381106828536
