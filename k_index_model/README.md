@@ -154,6 +154,71 @@ doesn't do. Worth prioritizing this pairing (K → Treasury returns) for
 any further work — e.g. out-of-sample validation — over the S&P 500 result,
 which did not survive the same test.
 
+## Turning the Treasury result into an actual strategy: does it hold up as a backtest?
+
+The regression above is a statistical association, not a trading strategy.
+`k_timed_treasury_backtest.py` builds the simplest possible real
+implementation of it: hold Treasuries (`IEF`) when K was positive last
+quarter, hold cash otherwise, rebalanced quarterly.
+
+**Stricter signal than the regression uses.** The regression's K is
+full-sample z-scored (a mild look-ahead caveat every K regression in this
+project already carries). A real backtest making capital-allocation
+decisions can't get away with that, so this uses a new
+`build_k_index_expanding()` — the same point-in-time/expanding-window
+z-scoring `bedi_index.py` already uses for BEDI, adapted for K's three
+pillars. If the strategy still works on this harder version of the
+signal, that's a stronger result than the regression alone, not a weaker
+one.
+
+| | Strategy (K-timed) | Benchmark (buy & hold) |
+|---|---|---|
+| CAGR | 3.34% | 3.28% |
+| Ann. Vol | **5.74%** | 7.25% |
+| Sharpe | **0.60** | 0.48 |
+| Max Drawdown | **-6.65%** | -21.13% |
+
+N=92 quarters (2003-2025), 64% time in market. Roughly the same return,
+much less risk — the Sharpe and drawdown improvement is doing the work,
+not return enhancement.
+
+**Before trusting that, three checks for whether this is real timing skill
+or just a "cash sometimes lowers volatility" artifact:**
+
+1. **Inverted signal** (long only when K was negative last quarter) —
+   if the real rule is capturing genuine information, flipping it should
+   be much worse than buy-and-hold, not similar. It is: CAGR -0.06%,
+   Sharpe 0.01, essentially flat/dead money. The asymmetry confirms the
+   direction is doing real work, not an artifact of being in cash sometimes.
+2. **The raw split**: average Treasury return in K-positive quarters is
+   +1.35%; in K-negative quarters, +0.03% — a clean separation, restating
+   the regression's finding directly in return terms.
+3. **Of the 5 worst Treasury quarters in the sample, the strategy was out
+   for 4 of them** (2022 Q1, 2016 Q4, 2021 Q1, 2022 Q3) — it's specifically
+   avoiding the tail-risk quarters, visible directly in the chart below as
+   the strategy sidestepping the entire 2018-2023 Treasury round-trip
+   (rally into 2020, violent 2022 rate-hike selloff) rather than a lucky
+   accumulation of small edges.
+
+Turnover is low (12 position switches over 92 quarters, ~7.7 quarters per
+regime), so this isn't a strategy that would be eaten alive by transaction
+costs even before modeling them explicitly.
+
+![K-timed Treasury backtest](output/k_timed_treasury_backtest.png)
+
+**Appropriate caution**: N=92 quarters, one asset, one signal threshold
+(K>0, not tuned or optimized) — this is a first honest pass, not a
+finished product. The Hit Rate stat in the raw output undercounts the
+strategy (41% vs. buy-and-hold's 59%) because cash quarters register as
+0%, not a "win" — not a real weakness, just a stat that doesn't translate
+cleanly to a strategy with a cash leg. What would sharpen this further:
+out-of-sample validation (pre-2003 data if a longer Treasury series can be
+sourced), a continuous/scaled exposure instead of binary on/off, and a
+real risk-free rate instead of the 0%-cash approximation. Full output:
+`output/k_timed_treasury_backtest_results.txt`,
+`output/k_timed_treasury_backtest_stats.csv`,
+`output/k_timed_treasury_backtest_returns.csv`.
+
 ## Real results: FX (via currency ETFs) and gold
 
 `usdeur.csv` (`FXE`), `usdgbp.csv` (`FXB`), `usdjpy.csv` (`FXY` — note this

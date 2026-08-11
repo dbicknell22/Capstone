@@ -136,6 +136,42 @@ def build_k_index():
     return Z, pillars_used, dict(zip(pillars_used, loadings))
 
 
+def build_k_index_expanding(min_periods: int = 20) -> pd.DataFrame:
+    """Point-in-time version of K (equal-weight only): each quarter's
+    z-score uses only the mean/std of quarters up to and including it
+    (expanding window), the same discipline as
+    bedi_index.build_bedi_expanding() in pillar2_alpha_model. Every K
+    regression elsewhere in this project uses build_k_index()'s full-sample
+    z-score instead and carries a documented mild look-ahead caveat because
+    of it -- fine for a regression coefficient's statistical significance,
+    but a real backtest is making capital-allocation decisions with the
+    signal, so it needs the no-look-ahead version. `min_periods=20` (5
+    years of quarterly data) avoids unstable z-scores on the first few
+    quarters' near-zero sample variance."""
+    wealth = build_wealth_pillar()
+    income = build_income_pillar()
+    consumer = build_consumer_pillar()
+
+    series = {"wealth": wealth, "income": income}
+    if consumer is not None:
+        series["consumer"] = consumer
+    pillars_used = list(series.keys())
+
+    common = pd.concat(series.values(), axis=1, sort=True)
+    common.columns = pillars_used
+    common = common.dropna().copy()
+    common["wealth"] = np.log(common["wealth"])
+
+    Z = pd.DataFrame(index=common.index)
+    for p in pillars_used:
+        exp_mean = common[p].expanding(min_periods=min_periods).mean()
+        exp_std = common[p].expanding(min_periods=min_periods).std()
+        Z[f"z_{p}"] = (common[p] - exp_mean) / exp_std
+    Z = Z.dropna()
+    Z["K"] = Z[[f"z_{p}" for p in pillars_used]].mean(axis=1)
+    return Z
+
+
 if __name__ == "__main__":
     Z, pillars_used, loadings = build_k_index()
     print(f"Pillars used: {pillars_used}" + ("" if len(pillars_used) == 3 else
