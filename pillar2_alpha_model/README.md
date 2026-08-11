@@ -173,7 +173,9 @@ caveat every other K regression in this project already carries. The
 rotation signal and real-estate share are raw DFA levels, never
 normalized over any rolling window, so neither has a look-ahead concern.
 Full output: `output/strategy_predictor_test_results.txt` and
-`output/strategy_predictor_test_summary.csv`.
+`output/strategy_predictor_test_summary.csv`. A one-page visual scorecard
+combining this with the performance table above (`strategy_predictor_scorecard.py`)
+is saved at `output/strategy_predictor_scorecard.png`.
 
 ## Data & how to run it for real
 
