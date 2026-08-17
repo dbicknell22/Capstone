@@ -1,0 +1,8 @@
+Does BEDI (combined) predict the long/short strategy's own quarterly return?
+N = 108 quarters (1999-03-31 -> 2025-12-31)
+
+contemporaneous: coef=-0.0037, p=0.8075
+n_lags=1: joint F=1.423, p=0.2355
+n_lags=2: joint F=0.685, p=0.5063
+n_lags=3: joint F=0.577, p=0.6312
+n_lags=4: joint F=0.496, p=0.7384

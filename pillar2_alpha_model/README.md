@@ -144,9 +144,10 @@ other regression in this project:
 | Rotation signal (Boomer equity share − safe-asset share) | 0.868 | 0.308 | 0.546 | 0.216 | 0.319 |
 | K-Index | 0.528 | 0.556 | 0.639 | 0.506 | **0.080** |
 | Real-estate rotation (Boomer real estate share of assets) | 0.607 | 0.706 | 0.925 | 0.922 | 0.969 |
+| BEDI (expanding, equal-weight) — `bedi_long_short_test.py` | 0.808 | 0.236 | 0.506 | 0.631 | 0.738 |
 
-**All three are clean nulls.** The rotation signal and real-estate
-rotation are null at every horizon, no fragile pattern. K-Index's 4-lag
+**All four are clean nulls.** The rotation signal, real-estate rotation,
+and BEDI are null at every horizon, no fragile pattern. K-Index's 4-lag
 reading (p=0.080) is the only one that even approaches significance, and
 it does so at just one out of four lag lengths tried — the exact "only
 significant at one arbitrary lag choice" red flag this project has
@@ -154,11 +155,24 @@ flagged elsewhere (USD/JPY, BEDI's structural break test) as a
 specification-mined result rather than a real one, not a finding to
 report as robust.
 
+**BEDI was added after the fact specifically to check whether a
+BEDI-timed version of this long/short trade (mirroring the K-timed/
+BEDI-timed/rotation-signal-timed Treasury backtests) would be worth
+building.** Since BEDI's own rotation component already came back null
+against this exact strategy, this result isn't a surprise — but it was
+verified rather than assumed. With BEDI itself also null at every lag
+(contemporaneous p=0.808, lagged p=0.24–0.74), **there is no basis for a
+BEDI-timed long/short strategy**: unlike the Treasury case, where the
+regression came first and justified building the backtest, here the
+regression says a timing overlay would have nothing to time off of. No
+backtest was built on top of this result, consistent with this project's
+practice of not building strategies on top of null regressions.
+
 **Read plainly: the demographic story behind this basket's ETF selection
 does not show up as a statistically detectable relationship in the
 basket's own returns**, whether tested against the raw Boomer rotation
-signal, the K-Index, or a literal "are they selling their homes" proxy.
-This is a different (and arguably more direct) test than the BEDI →
+signal, the K-Index, BEDI, or a literal "are they selling their homes"
+proxy. This is a different (and arguably more direct) test than the BEDI →
 LQD-SPY / K → Treasury results elsewhere in this project — those work on
 narrower, more targeted instrument pairs (credit vs. equity, Treasuries),
 while this basket is a broader multi-sector bet. The pattern across all of
