@@ -208,9 +208,30 @@ verified rather than assumed. With BEDI itself also null at every lag
 (contemporaneous p=0.808, lagged p=0.24–0.74), **there is no basis for a
 BEDI-timed long/short strategy**: unlike the Treasury case, where the
 regression came first and justified building the backtest, here the
-regression says a timing overlay would have nothing to time off of. No
-backtest was built on top of this result, consistent with this project's
-practice of not building strategies on top of null regressions.
+regression says a timing overlay would have nothing to time off of.
+
+**Built anyway, as a negative control** (`bedi_timed_long_short_backtest.py`),
+since a literal test of the exact rule — hold the long/short position
+when the de-risking signal is positive, hold cash otherwise — is worth
+having on record rather than just inferring from the regression:
+
+| Lag | CAGR | Sharpe | Max Drawdown |
+|---|---|---|---|
+| Always-on (no timing) | -3.27% | -0.14 | -67.0% |
+| lag=1 | +0.68% | 0.12 | -28.5% |
+| lag=2 | -0.93% | -0.04 | -35.2% |
+| lag=3 | -2.21% | -0.17 | -54.4% |
+| lag=4 | -3.33% | -0.32 | -58.8% |
+
+**Only lag=1 looks better than always-on, and it falls apart immediately
+at lag=2** — the exact "only works at one arbitrary lag choice" red flag
+already used elsewhere in this project (USD/JPY, the BEDI structural
+break test) to reject a result, not accept it. This confirms, rather than
+just infers from the regression, that there is no real de-risking-timed
+version of this strategy: the lag=1 reading is noise that happened to
+land favorably, not a robust relationship. Full output:
+`output/bedi_timed_long_short_backtest_results.txt`,
+`output/bedi_timed_long_short_backtest_summary.csv`.
 
 **Read plainly: the demographic story behind this basket's ETF selection
 does not show up as a statistically detectable relationship in the

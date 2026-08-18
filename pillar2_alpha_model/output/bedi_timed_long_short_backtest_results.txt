@@ -1,0 +1,12 @@
+De-risking-timed long/short backtest: hold long/short when the rotation
+signal (lagged) shows de-risking, hold cash otherwise. Lag swept 1-4,
+same discipline as every other backtest in this project.
+
+Always-on benchmark (no timing): CAGR=-3.27%, Sharpe=-0.14, MaxDD=-67.0%
+
+lag=1: N=107, switches=11, CAGR=+0.68%, Sharpe=0.12, MaxDD=-28.5%
+lag=2: N=106, switches=10, CAGR=-0.93%, Sharpe=-0.04, MaxDD=-35.2%
+lag=3: N=105, switches=10, CAGR=-2.21%, Sharpe=-0.17, MaxDD=-54.4%
+lag=4: N=104, switches=10, CAGR=-3.33%, Sharpe=-0.32, MaxDD=-58.8%
+
+Verdict: only lag=1 shows a positive Sharpe (0.12); lag=2-4 are flat-to-negative and monotonically worsening -- the same 'only works at one arbitrary lag' red flag used elsewhere in this project to reject a result. Consistent with the underlying continuous regression (strategy_predictor_test.py, bedi_long_short_test.py) already being null at every lag. No real basis for a de-risking-timed version of the long/short strategy.
