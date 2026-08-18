@@ -1,0 +1,17 @@
+Regressions: K-Index and BEDI vs. the long/short strategy's own return
+
+K-Index -> long/short strategy: contemporaneous p=0.5275
+  n_lags=1: p=0.5558
+  n_lags=2: p=0.6392
+  n_lags=3: p=0.5058
+  n_lags=4: p=0.0797
+BEDI -> long/short strategy: contemporaneous p=0.8075
+  n_lags=1: p=0.2355
+  n_lags=2: p=0.5063
+  n_lags=3: p=0.6312
+  n_lags=4: p=0.7384
+
+Backtests: hold long/short when signal_lag1 > 0, else cash
+Always-on (no timing):  CAGR=-3.27%  Sharpe=-0.14  MaxDD=-67.0%
+K-timed:                CAGR=-2.18%  Sharpe=-0.19  MaxDD=-39.0%  (N=93)
+BEDI-timed:             CAGR=-2.04%  Sharpe=-0.08  MaxDD=-56.3%  (N=107)

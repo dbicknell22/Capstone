@@ -1,0 +1,11 @@
+signal,test,n_lags,p_value
+K-Index,contemporaneous,0,0.5275382129687616
+K-Index,lagged_joint_F,1,0.5557819871776696
+K-Index,lagged_joint_F,2,0.6392270270820599
+K-Index,lagged_joint_F,3,0.5058346711485663
+K-Index,lagged_joint_F,4,0.07972261814984066
+BEDI,contemporaneous,0,0.8074545808494671
+BEDI,lagged_joint_F,1,0.23554661511349867
+BEDI,lagged_joint_F,2,0.506323792410058
+BEDI,lagged_joint_F,3,0.6311705216205408
+BEDI,lagged_joint_F,4,0.738447973712683
