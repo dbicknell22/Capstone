@@ -1,0 +1,54 @@
+Does the DIRECTION (rising vs. falling) of K, BEDI, or the rotation
+signal predict equity returns -- the S&P 500, or the long/short
+strategy's own return? Methodology: contemporaneous_and_lagged_test(),
+swept across lag lengths 1-4, same discipline as every other
+regression in this project.
+
+=== Direction of K -> S&P 500 (pct chg) ===
+  N = 111 quarters (1998-06-30 -> 2025-12-31)
+  contemporaneous: coef=0.0472, p=0.0007
+  n_lags=1: joint F=0.003, p=0.9532
+  n_lags=2: joint F=0.041, p=0.9599
+  n_lags=3: joint F=0.605, p=0.6134
+  n_lags=4: joint F=0.398, p=0.8099
+
+=== Direction of BEDI -> S&P 500 (pct chg) ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=0.0886, p=0.0000
+  n_lags=1: joint F=0.256, p=0.6138
+  n_lags=2: joint F=1.351, p=0.2636
+  n_lags=3: joint F=1.516, p=0.2149
+  n_lags=4: joint F=1.325, p=0.2659
+
+=== Direction of rotation signal -> S&P 500 (pct chg) ===
+  N = 111 quarters (1998-06-30 -> 2025-12-31)
+  contemporaneous: coef=-0.0516, p=0.0173
+  n_lags=1: joint F=2.993, p=0.0864
+  n_lags=2: joint F=2.108, p=0.1264
+  n_lags=3: joint F=1.499, p=0.2189
+  n_lags=4: joint F=1.213, p=0.3097
+
+=== Direction of K -> Long/short strategy (own return) ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0575, p=0.0002
+  n_lags=1: joint F=2.167, p=0.1440
+  n_lags=2: joint F=2.111, p=0.1262
+  n_lags=3: joint F=1.775, p=0.1564
+  n_lags=4: joint F=1.434, p=0.2280
+
+=== Direction of BEDI -> Long/short strategy (own return) ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0400, p=0.0061
+  n_lags=1: joint F=0.220, p=0.6397
+  n_lags=2: joint F=0.124, p=0.8837
+  n_lags=3: joint F=0.841, p=0.4745
+  n_lags=4: joint F=1.464, p=0.2190
+
+=== Direction of rotation signal -> Long/short strategy (own return) ===
+  N = 108 quarters (1999-03-31 -> 2025-12-31)
+  contemporaneous: coef=0.0186, p=0.2797
+  n_lags=1: joint F=1.245, p=0.2670
+  n_lags=2: joint F=4.482, p=0.0136
+  n_lags=3: joint F=3.540, p=0.0173
+  n_lags=4: joint F=2.856, p=0.0273
+

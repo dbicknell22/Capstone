@@ -322,6 +322,52 @@ properly. Full output: `output/reit_predictor_test_results.txt` and
 completeness with the same 3-predictor pattern used against the long/short
 strategy above.
 
+## Does the DIRECTION of K/BEDI (rising vs. falling) explain equities?
+
+`k_index_model`'s advisor-requested specification test found that, for
+Treasuries, the *direction* of K (simply whether it rose or fell last
+quarter) has a real, robust, outlier-resistant contemporaneous
+relationship distinct from the level's lagged one. Every equity test run
+in this project up to that point — S&P 500, the long/short strategy,
+BEDI vs. sector pairs — used the *level*, never direction. `direction_equity_test.py`
+closes that gap, testing direction-of-K, direction-of-BEDI, and
+direction-of-the-rotation-signal against the S&P 500 and the long/short
+strategy's own return.
+
+| Signal → Target | Contemporaneous p |
+|---|---|
+| Direction of K → S&P 500 | **0.0007** |
+| Direction of BEDI → S&P 500 | **<0.0001** |
+| Direction of rotation signal → S&P 500 | **0.017** |
+| Direction of K → long/short strategy | **0.0002** |
+| Direction of BEDI → long/short strategy | **0.006** |
+
+**These look striking, but are very likely mechanical, not predictive —
+and this is the important, honest read.** K's wealth pillar is built from
+the top-10%/bottom-50% net worth ratio, and the top 10% hold most
+household equity wealth. When stocks rally *this quarter*, that gap
+mechanically widens *in the same quarter*, independent of any real
+economic signal — the exact reverse-causation risk flagged when this
+project's mechanism tests were first built. A same-quarter "K rises when
+stocks rise" is close to circular, not a finding, and it is entirely
+consistent that this shows up only contemporaneously, with every lagged
+reading here coming back null (see full output).
+
+**One lagged reading looked different and got the same scrutiny as
+everything else in this project**: direction-of-the-rotation-signal
+predicting the long/short strategy 2 quarters out (p=0.014). It does not
+survive the objective outlier check — p rises to 0.30 once the most
+extreme quarters are dropped, and it took removing 9 of 106 quarters (an
+unusually large fraction) to get there, itself a sign of fragility rather
+than a borderline-but-real effect.
+
+**Read together with every other equity test in this project (S&P 500,
+sector pairs, the long/short strategy, both the level and direction of
+K/BEDI/rotation signal): equities do not show a genuine K/BEDI
+relationship under any specification tried so far.** The one place a real
+relationship exists remains rate-sensitive fixed income. Full output:
+`output/direction_equity_test_results.txt`, `output/direction_equity_test_summary.csv`.
+
 ## Data & how to run it for real
 
 The model needs two free data sources: Yahoo Finance (via `yfinance`, for
