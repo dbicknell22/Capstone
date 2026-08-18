@@ -368,6 +368,60 @@ relationship under any specification tried so far.** The one place a real
 relationship exists remains rate-sensitive fixed income. Full output:
 `output/direction_equity_test_results.txt`, `output/direction_equity_test_summary.csv`.
 
+## Every angle, side by side: Level, Direction, and Difference of K and BEDI
+
+`all_angles_long_short.py` and `k_bedi_long_short_backtest.py` consolidate
+every specification tested against the long/short strategy — 3
+specifications (Level, Direction, Difference) × 2 indices (K, BEDI) — into
+one consistent set of regressions and backtests, for a single presentation
+exhibit showing every angle this project attacked the equities question from.
+
+**Regressions** (contemporaneous p-value; full lag sweep in
+`output/all_angles_regression_summary.csv`):
+
+| | Level | Direction | Difference |
+|---|---|---|---|
+| K-Index | 0.528 | 0.000 (mechanical — see below) | 0.006 (mechanical) |
+| BEDI | 0.808 | 0.006 (mechanical) | 0.000 (mechanical) |
+
+Level is null everywhere. Direction and Difference show strong
+contemporaneous p-values for both indices — but per the mechanical-
+construction concern already documented above (equity rallies mechanically
+widen K/BEDI in the same quarter, since the top-wealth pillar is partly
+composed of equity holdings), these are not treated as real relationships,
+and every lagged reading for both is null.
+
+**Backtests** (hold long/short when the signal, lagged one quarter, was
+positive; full stats in `output/all_angles_backtest_stats.csv`):
+
+| Specification | Index | CAGR | Sharpe | Max Drawdown |
+|---|---|---|---|---|
+| Always-on (baseline) | — | -3.27% | -0.14 | -67.0% |
+| Level | K | -2.18% | -0.19 | -39.0% |
+| Level | BEDI | -2.04% | -0.08 | -56.3% |
+| Direction | K | -1.65% | -0.15 | -42.9% |
+| Direction | BEDI | -2.17% | -0.15 | -57.5% |
+| Difference | K | -1.67% | -0.16 | -42.9% |
+| Difference | BEDI | -2.19% | -0.15 | -57.5% |
+
+**Every timed version still loses money.** Only Level-BEDI improves
+Sharpe over doing nothing at all (-0.08 vs. -0.14); every other
+specification is flat or worse. Worth being precise about one thing:
+**Direction-timed and Difference-timed backtests are nearly identical by
+construction**, not independent confirmations — thresholding a continuous
+change at zero (Difference) and thresholding its sign (Direction) produce
+the same binary hold/cash pattern, so their return series are
+mathematically the same rule wearing two different labels. Only the
+*regressions* meaningfully distinguish Direction from Difference, since a
+linear regression uses the magnitude of the continuous Difference series
+in a way a simple sign threshold cannot.
+
+**Individual chart exports** (one file per exhibit, matching this table):
+`output/reg_level_chart.png`, `output/reg_direction_chart.png`,
+`output/reg_difference_chart.png`, `output/returns_level_chart.png`,
+`output/returns_direction_chart.png`, `output/returns_difference_chart.png`,
+`output/all_angles_scorecard_table.png`.
+
 ## Data & how to run it for real
 
 The model needs two free data sources: Yahoo Finance (via `yfinance`, for

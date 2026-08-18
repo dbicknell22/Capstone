@@ -1,0 +1,42 @@
+Regressions (K/BEDI x Level/Direction/Difference vs. long/short strategy):
+      spec index            test  n_lags      p_value
+     Level     K contemporaneous       0 5.275382e-01
+     Level     K  lagged_joint_F       1 5.557820e-01
+     Level     K  lagged_joint_F       2 6.392270e-01
+     Level     K  lagged_joint_F       3 5.058347e-01
+     Level     K  lagged_joint_F       4 7.972262e-02
+     Level  BEDI contemporaneous       0 8.074546e-01
+     Level  BEDI  lagged_joint_F       1 2.355466e-01
+     Level  BEDI  lagged_joint_F       2 5.063238e-01
+     Level  BEDI  lagged_joint_F       3 6.311705e-01
+     Level  BEDI  lagged_joint_F       4 7.384480e-01
+ Direction     K contemporaneous       0 1.753639e-04
+ Direction     K  lagged_joint_F       1 1.439844e-01
+ Direction     K  lagged_joint_F       2 1.261975e-01
+ Direction     K  lagged_joint_F       3 1.564391e-01
+ Direction     K  lagged_joint_F       4 2.279823e-01
+ Direction  BEDI contemporaneous       0 6.072316e-03
+ Direction  BEDI  lagged_joint_F       1 6.397345e-01
+ Direction  BEDI  lagged_joint_F       2 8.836830e-01
+ Direction  BEDI  lagged_joint_F       3 4.745206e-01
+ Direction  BEDI  lagged_joint_F       4 2.189566e-01
+Difference     K contemporaneous       0 5.462974e-03
+Difference     K  lagged_joint_F       1 4.214009e-01
+Difference     K  lagged_joint_F       2 4.796371e-01
+Difference     K  lagged_joint_F       3 1.272959e-01
+Difference     K  lagged_joint_F       4 6.892686e-02
+Difference  BEDI contemporaneous       0 2.116218e-08
+Difference  BEDI  lagged_joint_F       1 5.493258e-01
+Difference  BEDI  lagged_joint_F       2 5.665481e-01
+Difference  BEDI  lagged_joint_F       3 6.142687e-01
+Difference  BEDI  lagged_joint_F       4 1.620370e-01
+
+Backtests (hold long/short when spec_lag1 > 0, else cash):
+      spec index      CAGR  Ann. Vol    Sharpe  Max Drawdown  Hit Rate   N
+ Always-on     - -0.032683  0.153890 -0.139523     -0.670201  0.444444 108
+     Level     K -0.021815  0.092112 -0.193141     -0.389702  0.301075  93
+     Level  BEDI -0.020402  0.136235 -0.084453     -0.563177  0.411215 107
+ Direction     K -0.016535  0.084824 -0.154489     -0.428676  0.225806  93
+ Direction  BEDI -0.021724  0.106292 -0.153520     -0.575235  0.252336 107
+Difference     K -0.016713  0.085286 -0.155323     -0.428676  0.228261  92
+Difference  BEDI -0.021927  0.106794 -0.154240     -0.575235  0.254717 106
