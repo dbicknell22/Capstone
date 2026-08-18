@@ -1,0 +1,36 @@
+Does the choice of K specification change the K -> 10Y Treasury result?
+Target: treasury_10y_total_return_pct_chg (same target as run_k_regressions.py)
+Methodology: contemporaneous_and_lagged_test() -- two SEPARATE regressions,
+swept across lag lengths 1-4, same discipline as every other regression
+in this project.
+
+=== Level of K ===
+  N = 93 quarters (2002-12-31 -> 2025-12-31)
+  contemporaneous: coef=0.0069, p=0.2619
+  n_lags=1: joint F=6.163, p=0.0149
+  n_lags=2: joint F=4.774, p=0.0107
+  n_lags=3: joint F=3.459, p=0.0197
+  n_lags=4: joint F=3.169, p=0.0175
+
+=== Difference of K (K_t - K_t-1) ===
+  N = 93 quarters (2002-12-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0354, p=0.0177
+  n_lags=1: joint F=4.305, p=0.0408
+  n_lags=2: joint F=2.701, p=0.0726
+  n_lags=3: joint F=2.286, p=0.0842
+  n_lags=4: joint F=3.319, p=0.0140
+  outlier-robustness check on contemporaneous (4 quarters with |Treasury return| > 2 std dropped): ['2008-12-31', '2010-06-30', '2011-09-30', '2020-03-31']
+    full sample:  coef=-0.0354, p=0.0177 (N=93)
+    ex-outliers:  coef=-0.0257, p=0.0437 (N=89)
+
+=== Direction of K (1=rising, 0=falling) ===
+  N = 93 quarters (2002-12-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0215, p=0.0030
+  n_lags=1: joint F=1.458, p=0.2303
+  n_lags=2: joint F=0.771, p=0.4654
+  n_lags=3: joint F=1.055, p=0.3725
+  n_lags=4: joint F=0.799, p=0.5292
+  outlier-robustness check on contemporaneous (4 quarters with |Treasury return| > 2 std dropped): ['2008-12-31', '2010-06-30', '2011-09-30', '2020-03-31']
+    full sample:  coef=-0.0215, p=0.0030 (N=93)
+    ex-outliers:  coef=-0.0170, p=0.0060 (N=89)
+

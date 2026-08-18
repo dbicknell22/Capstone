@@ -1,0 +1,18 @@
+spec,test,n_lags,coef_or_F,p_value
+Level of K,contemporaneous,0,0.006880621622768233,0.26186787631246844
+Level of K,lagged_joint_F,1,6.1632368906153845,0.01487681448257593
+Level of K,lagged_joint_F,2,4.774121967097044,0.010700418786280332
+Level of K,lagged_joint_F,3,3.45888053866768,0.019709885503991536
+Level of K,lagged_joint_F,4,3.1690087907718514,0.01754150950319049
+Difference of K (K_t - K_t-1),contemporaneous,0,-0.03535365933538643,0.01766504436281133
+Difference of K (K_t - K_t-1),lagged_joint_F,1,4.305432094032159,0.040813931827844346
+Difference of K (K_t - K_t-1),lagged_joint_F,2,2.700764057256072,0.07259772682890793
+Difference of K (K_t - K_t-1),lagged_joint_F,3,2.2861107354646877,0.0841668898864857
+Difference of K (K_t - K_t-1),lagged_joint_F,4,3.319064225216939,0.013975192325477316
+Difference of K (K_t - K_t-1),contemporaneous_ex_outliers,0,-0.02566391643172687,0.04372902034847094
+"Direction of K (1=rising, 0=falling)",contemporaneous,0,-0.021469855410491713,0.0030166406414357896
+"Direction of K (1=rising, 0=falling)",lagged_joint_F,1,1.4584000989825951,0.23031420705546446
+"Direction of K (1=rising, 0=falling)",lagged_joint_F,2,0.7714236390890867,0.46538694140298764
+"Direction of K (1=rising, 0=falling)",lagged_joint_F,3,1.0548822124073753,0.3724528063518513
+"Direction of K (1=rising, 0=falling)",lagged_joint_F,4,0.7986623017369326,0.5292410410138655
+"Direction of K (1=rising, 0=falling)",contemporaneous_ex_outliers,0,-0.01702709922688467,0.0060459568801826515

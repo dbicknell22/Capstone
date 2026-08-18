@@ -80,6 +80,50 @@ single-name idiosyncratic risk and survivorship bias in the backtest.
    `output/performance_stats.csv`, `output/alpha_regression_summary.txt`, and
    `output/cumulative_returns.png`.
 
+## Advisor comment: how is the long/short portfolio constructed?
+
+Precisely, since this came up as a point of confusion:
+
+- **Holdings.** Long leg: `XLV` (healthcare), `XLU` (utilities), `XLP`
+  (staples), `VYM` (high-dividend-yield) — four ETFs. Short leg: `XLK`
+  (technology), `XLY` (discretionary), `IWO` (small-cap growth) — three
+  ETFs. `SPY` is a benchmark for comparison only; it is not part of
+  either leg.
+- **Weighting.** Each leg is equal-weighted across whichever of its ETFs
+  already existed at each point in time (`basket_returns()` in
+  `factor_construction.py` takes the mean of that month's per-ticker
+  returns, which naturally skips any ticker not yet trading). The
+  basket's actual composition therefore changes over the sample: XLV,
+  XLU, XLP, XLK, and XLY all have data from December 1998; `IWO`
+  doesn't exist until July 2000 (before that, the short leg is XLK+XLY
+  only, a 2-way split); `VYM` doesn't exist until November 2006 (before
+  that, the long leg is XLV+XLU+XLP only, a 3-way split). The full
+  4-vs-3 split is only in effect from late 2006 onward.
+- **When it holds, when it sells — there is no timing rule.** This is
+  the central point: the strategy is **always fully invested**, every
+  month, for the entire 1999–2025 backtest. It is **rebalanced monthly
+  to equal weight, mechanically** — there is no discretionary buy/sell
+  decision, no stop-loss, and critically, **no use of K, BEDI, or the
+  rotation signal to turn the position on or off.** This is what
+  separates it from the K-timed / BEDI-timed / rotation-signal-timed
+  Treasury strategies elsewhere in this project, which explicitly do
+  use a signal to decide, quarter by quarter, whether to hold the asset
+  or sit in cash. The long/short ETF strategy has no such mechanism —
+  it is a static, always-on bet on the sector-rotation thesis itself,
+  and `strategy_predictor_test.py` / `bedi_long_short_test.py` (below)
+  confirm after the fact that its returns don't even correlate with any
+  of those signals.
+- **How the combined return is computed.** `long_short = long_leg −
+  short_leg`, each month — the P&L of $1 notional long against $1
+  notional short (100% long / 100% short, 0% net capital, 200% gross
+  exposure), not any other specific leverage ratio.
+- **What's priced in, what isn't.** Prices are total-return series (CRSP
+  daily returns via WRDS, dividends included, splits adjusted, turned
+  into a synthetic cumulative price index) — dividend income is
+  captured. Transaction costs, bid/ask spread, short-borrow costs, and
+  financing/margin costs are **not** modeled; this is a frictionless
+  backtest.
+
 ## Part 1 results — real ETF returns, via WRDS/CRSP
 
 **Update: real price data now exists.** Daily total returns (`RET`, dividends

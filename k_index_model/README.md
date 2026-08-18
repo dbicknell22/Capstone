@@ -154,6 +154,56 @@ doesn't do. Worth prioritizing this pairing (K → Treasury returns) for
 any further work — e.g. out-of-sample validation — over the S&P 500 result,
 which did not survive the same test.
 
+## Advisor comment: which measure of K is actually being used?
+
+> "It is important to clarify what measure of K you use for the asset
+> price effects. It could be the level of K, the difference of K,
+> whether K is growing or shrinking. All make sense and might be tried."
+
+**Clarification: every K regression in this project — the Treasury result
+above, the S&P 500/FX/gold/econ-growth tests, the mechanism tests, and
+the K-timed backtest — uses the LEVEL of K.** That was a real, if
+implicit, choice, not the only reasonable one. `k_specification_test.py`
+makes the choice explicit and tests the two named alternatives against
+the one target where K already has a real relationship, so specification
+choice is checked exactly where it matters most:
+
+| Specification | Contemporaneous p | n=1 | n=2 | n=3 | n=4 |
+|---|---|---|---|---|---|
+| **Level of K** (existing approach) | 0.262 | **0.015** | **0.011** | **0.020** | **0.018** |
+| **Difference of K** (K_t − K_t-1) | **0.018** | **0.041** | 0.073 | 0.084 | **0.014** |
+| **Direction of K** (1=rising, 0=falling) | **0.003** | 0.230 | 0.465 | 0.373 | 0.529 |
+
+**All three specifications find something real — but at different
+horizons, which is itself the finding.** The level of K predicts Treasury
+returns with a one-quarter lag (robust at every lag length, null
+contemporaneously) — already documented above. The *direction* of K
+(simply whether it rose or fell this quarter) has a strong, clean
+**contemporaneous** relationship instead (p=0.003) that is null at every
+lag — the opposite timing signature. The *difference* of K sits between
+the two: significant contemporaneously and at 2 of 4 lags, a less clean
+pattern than either of the other two.
+
+**Outlier check, since two of these are new results:** dropping the same
+4 quarters flagged elsewhere in this project (2008Q4, 2010Q2, 2011Q3,
+2020Q1), both new contemporaneous results survive — Direction of K barely
+moves (p=0.003 → 0.006), Difference of K weakens but holds (p=0.018 →
+0.044).
+
+**Economically, this is a coherent story, not three competing claims:**
+a widening-*direction* quarter (K actively rising right now) coincides
+with an immediate flight-to-quality reaction in Treasuries the same
+quarter, while the *level* of divergence (how wide the gap currently
+stands, regardless of which way it's moving) sets up a delayed
+follow-through effect the following quarter. Direction captures a fast,
+immediate reaction; level captures a slower, persistent one. Both are
+real; neither is redundant with the other, and both survive scrutiny —
+worth carrying both specifications forward rather than treating "level"
+as the only correct choice.
+
+Full output: `output/k_specification_test_results.txt`,
+`output/k_specification_test_summary.csv`.
+
 ## Turning the Treasury result into an actual strategy: does it hold up as a backtest?
 
 The regression above is a statistical association, not a trading strategy.
