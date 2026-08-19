@@ -39,8 +39,10 @@ LEFT_ROWS = [
     ("Gold", "Asset price", "NULL", "Not significant at any lag"),
     ("Unemployment rate (Δ)", "Econ growth", "NULL", "Null at every lag, 1–4"),
     ("GDP (% chg)", "Econ growth", "NULL", "Combined-model \"hit\" was multicollinearity"),
-    ("Real-estate rotation → REIT", "Real estate", "NULL", "Null at every lag, 1–4"),
-    ("K-Index → REIT", "Real estate", "FAILS CHECK", "p=0.021 → 0.075 once outliers dropped"),
+    ("Real-estate rotation → MBB (MBS)", "Real estate", "NULL", "Null at every lag, 1–4"),
+    ("BEDI → MBB (MBS)", "Real estate", "NULL", "Null at every lag, 1–4"),
+    ("Rotation signal → MBB (MBS)", "Real estate", "NULL", "Null at every lag, 1–4"),
+    ("K-Index → MBB (MBS)", "Real estate", "FAILS CHECK", "p=0.048 → 0.093 once outliers dropped"),
 ]
 
 RIGHT_ROWS = [
