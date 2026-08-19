@@ -1,0 +1,22 @@
+predictor,test,n_lags,coef_or_F,p_value
+K-Index (level),contemporaneous,0,0.005850040526030635,0.21689362216878105
+K-Index (level),lagged_joint_F,1,3.6845849982894343,0.05882600808565338
+K-Index (level),lagged_joint_F,2,2.802168156789131,0.06730917445235379
+K-Index (level),lagged_joint_F,3,2.0694123610803743,0.11194926240449608
+K-Index (level),lagged_joint_F,4,1.9206788343641836,0.11656113512371555
+K-Index (level),contemporaneous_ex_outliers,0,0.004169809544850322,0.0925989307253359
+"BEDI (expanding, equal-weight)",contemporaneous,0,0.009075448012294181,0.17248471018100575
+"BEDI (expanding, equal-weight)",lagged_joint_F,1,1.9543663998079883,0.16635054883784597
+"BEDI (expanding, equal-weight)",lagged_joint_F,2,1.0716069637804166,0.3478557559643774
+"BEDI (expanding, equal-weight)",lagged_joint_F,3,0.7454810321069746,0.5285451611755215
+"BEDI (expanding, equal-weight)",lagged_joint_F,4,0.5713244680551033,0.6843034217816294
+Rotation signal (Boomer equity - safe-asset share),contemporaneous,0,-0.0019985078310233387,0.340664399924269
+Rotation signal (Boomer equity - safe-asset share),lagged_joint_F,1,1.5028883402610445,0.22416760342074044
+Rotation signal (Boomer equity - safe-asset share),lagged_joint_F,2,0.8848712479369999,0.41720762950648993
+Rotation signal (Boomer equity - safe-asset share),lagged_joint_F,3,0.5873976594123015,0.6252504999669861
+Rotation signal (Boomer equity - safe-asset share),lagged_joint_F,4,0.46470177574845334,0.7613929123594891
+Real-estate rotation (Boomer real estate share of assets),contemporaneous,0,0.0010793234923500965,0.32590246552976976
+Real-estate rotation (Boomer real estate share of assets),lagged_joint_F,1,0.7824381709548608,0.379300704310905
+Real-estate rotation (Boomer real estate share of assets),lagged_joint_F,2,1.1778019697042534,0.3138170064693386
+Real-estate rotation (Boomer real estate share of assets),lagged_joint_F,3,0.8031256850462355,0.4962571980845374
+Real-estate rotation (Boomer real estate share of assets),lagged_joint_F,4,0.7201747604403707,0.5810226592038354

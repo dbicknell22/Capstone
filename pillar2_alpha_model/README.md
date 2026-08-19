@@ -322,6 +322,69 @@ properly. Full output: `output/reit_predictor_test_results.txt` and
 completeness with the same 3-predictor pattern used against the long/short
 strategy above.
 
+## Does K, BEDI, or the rotation signal predict MBB (mortgage-backed securities) returns?
+
+Every real, robust result in this project involves a rate-sensitive
+**fixed-income** instrument (10Y Treasury, IG credit spread). REITs, tested
+above, are equity, not fixed income — and their one promising reading
+turned out to be a crisis-period co-movement, not a real relationship. MBB
+(the iShares MBS ETF, ~5-6yr duration) is a much closer analog to
+Treasuries than a REIT basket is: it's priced primarily off mortgage rates
+and the Treasury curve, while still being literally about real estate
+(mortgages). This tests whether the rate-sensitivity story extends to
+mortgage-backed fixed income. Data: `data_cache/MBB.csv`, a synthetic
+total-return index built from WRDS/CRSP daily returns (PERMNO 91873,
+`DlyRet`, dividends/splits included), 2007-03-16 to 2025-12-31.
+
+Same methodology, all four predictors already validated elsewhere in this
+project, contemporaneous and lagged tested separately, swept across lags 1-4:
+
+| Test | K-Index | BEDI | Rotation signal | Real-estate rotation |
+|---|---|---|---|---|
+| N | 75 quarters (2007-2025) | 75 | 75 | 75 |
+| Contemporaneous | coef=0.0059, p=0.217 | coef=0.0091, p=0.173 | coef=-0.0020, p=0.341 | coef=0.0011, p=0.326 |
+| Lagged joint F, n=1 | p=0.059 | p=0.166 | p=0.224 | p=0.379 |
+| n=2 | p=0.067 | p=0.348 | p=0.417 | p=0.314 |
+| n=3 | p=0.112 | p=0.529 | p=0.625 | p=0.496 |
+| n=4 | p=0.117 | p=0.684 | p=0.761 | p=0.581 |
+
+**BEDI, the rotation signal, and the real-estate rotation signal are all
+clean nulls at every horizon** (p ranges from 0.17 to 0.76) — same verdict
+as REITs, now extended to mortgage-backed fixed income.
+
+**K-Index's lagged reading looked like the best candidate yet** — p=0.059
+at n=1, fading gradually rather than randomly (0.059 → 0.067 → 0.112 →
+0.117), which is a more encouraging shape than the REIT result's flat
+contemporaneous spike. But it still fails the same objective outlier
+check used everywhere else in this project — dropping the 5 of 74 quarters
+(6.8%) where MBB's own quarterly return exceeds 2 standard deviations
+(2008Q4, 2022Q1, 2022Q3, 2023Q4, 2024Q3 — the financial crisis and the
+2022 rate-shock year):
+
+| | Full sample | Ex-outliers (5 of 74 dropped) |
+|---|---|---|
+| Coefficient | 0.0081 | 0.0042 |
+| p-value | 0.048 | **0.093** |
+
+The coefficient itself roughly halves once the 2022 rate-shock quarters are
+removed, not just the p-value — this is a handful of extreme-volatility
+quarters driving the whole result, not a relationship that holds across
+ordinary conditions. **Read honestly: despite MBS being a much
+better-reasoned hypothesis than REITs (genuine fixed income, rate-sensitive,
+literally mortgage-linked), the result is the same story as REITs, gold,
+FX, and the S&P 500 — an initially-interesting reading that doesn't survive
+the outlier check.** The one caveat noted going in — MBS's negative
+convexity/prepayment risk capping upside relative to Treasuries — turns out
+not to matter here, since there's no surviving relationship to dampen.
+
+This is now the fourth asset class (after REITs, and alongside FX/gold/S&P
+500 in the equities work) where K's contemporaneous-or-near-lagged reading
+fails an honest robustness check. **K's only relationship that survives
+every check in this project remains the lagged 10Y Treasury result** (and
+BEDI's lagged IG-credit-spread result) — not real estate, not REITs, and
+now not MBS either. Full output: `output/mbb_predictor_test_results.txt`,
+`output/mbb_predictor_test_summary.csv`, chart: `output/mbb_predictor_chart.png`.
+
 ## Does the DIRECTION of K/BEDI (rising vs. falling) explain equities?
 
 `k_index_model`'s advisor-requested specification test found that, for

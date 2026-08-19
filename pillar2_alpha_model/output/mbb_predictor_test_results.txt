@@ -1,0 +1,41 @@
+Does K, BEDI, the rotation signal, or real-estate rotation predict MBB (MBS) returns?
+Methodology: contemporaneous_and_lagged_test() -- two SEPARATE
+regressions (contemporaneous-only, lagged-only joint F-test),
+swept across lag lengths 1-4, same discipline as every other
+regression in this project.
+
+=== K-Index (level) ===
+  N = 75 quarters (2007-06-30 -> 2025-12-31)
+  contemporaneous: coef=0.0059, p=0.2169
+  n_lags=1: joint F=3.685, p=0.0588
+  n_lags=2: joint F=2.802, p=0.0673
+  n_lags=3: joint F=2.069, p=0.1119
+  n_lags=4: joint F=1.921, p=0.1166
+  outlier-robustness check on n_lags=1 (5 quarters with |MBB return| > 2 std dropped): ['2008-12-31', '2022-03-31', '2022-09-30', '2023-12-31', '2024-09-30']
+    full sample:  coef=0.0081, p=0.0483 (N=74)
+    ex-outliers:  coef=0.0042, p=0.0926 (N=69)
+
+=== BEDI (expanding, equal-weight) ===
+  N = 75 quarters (2007-06-30 -> 2025-12-31)
+  contemporaneous: coef=0.0091, p=0.1725
+  n_lags=1: joint F=1.954, p=0.1664
+  n_lags=2: joint F=1.072, p=0.3479
+  n_lags=3: joint F=0.745, p=0.5285
+  n_lags=4: joint F=0.571, p=0.6843
+
+=== Rotation signal (Boomer equity - safe-asset share) ===
+  N = 75 quarters (2007-06-30 -> 2025-12-31)
+  contemporaneous: coef=-0.0020, p=0.3407
+  n_lags=1: joint F=1.503, p=0.2242
+  n_lags=2: joint F=0.885, p=0.4172
+  n_lags=3: joint F=0.587, p=0.6253
+  n_lags=4: joint F=0.465, p=0.7614
+
+=== Real-estate rotation (Boomer real estate share of assets) ===
+  N = 75 quarters (2007-06-30 -> 2025-12-31)
+  contemporaneous: coef=0.0011, p=0.3259
+  n_lags=1: joint F=0.782, p=0.3793
+  n_lags=2: joint F=1.178, p=0.3138
+  n_lags=3: joint F=0.803, p=0.4963
+  n_lags=4: joint F=0.720, p=0.5810
+
