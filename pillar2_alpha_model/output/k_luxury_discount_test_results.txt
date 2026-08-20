@@ -1,0 +1,15 @@
+Does K predict the luxury/discount consumer long-short basket's return?
+Methodology: contemporaneous_and_lagged_test() -- two SEPARATE
+regressions (contemporaneous-only, lagged-only joint F-test),
+swept across lag lengths 1-4, same discipline as every other
+regression in this project. K = full-sample level.
+
+N = 52 quarters (2013-03-31 -> 2025-12-31)
+contemporaneous: coef=-0.0021, p=0.8813
+n_lags=1: joint F=1.131, p=0.2926
+n_lags=2: joint F=0.642, p=0.5304
+n_lags=3: joint F=4.540, p=0.0070
+n_lags=4: joint F=4.907, p=0.0022
+  outlier-robustness check on n_lags=1 (3 quarters with |basket return| > 2 std dropped): ['2013-06-30', '2016-03-31', '2024-09-30']
+    full sample:  coef=-0.0124, p=0.4238 (N=51)
+    ex-outliers:  coef=-0.0229, p=0.1613 (N=48)

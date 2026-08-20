@@ -385,6 +385,74 @@ BEDI's lagged IG-credit-spread result) — not real estate, not REITs, and
 now not MBS either. Full output: `output/mbb_predictor_test_results.txt`,
 `output/mbb_predictor_test_summary.csv`, chart: `output/mbb_predictor_chart.png`.
 
+## Does K predict a luxury-vs-discount consumer long/short, built specifically to fix the original basket's conceptual problem?
+
+The original long/short (defensive sectors long, growth sectors short) never
+correlated with K, and on reflection the pairing had a real conceptual
+problem, not just a null result: K's wealth pillar is partly composed of
+top-decile equity holdings, which overlap with exactly the growth/tech
+names the original short leg bets against. A tech rally can mechanically
+push K up in the same quarter — the opposite of what the short leg needs to
+predict — so there was never a clean channel for K to lead that basket.
+
+`luxury_discount_construction.py` builds a basket that targets K's
+*consumer* pillar directly instead, with no such overlap: **long** premium/
+luxury consumer names (`RL` Ralph Lauren, `EL` Estée Lauder, `RH`, `ULTA`,
+`LULU`) vs. **short** discount/value consumer names (`DLTR`, `ROST`, `DG`,
+`FIVE`, `BURL`) — top-of-the-K discretionary spending against bottom-of-
+the-K trade-down behavior, the literal version of the K-shaped-consumer
+story rather than an age/lifecycle proxy for it. Same mechanics as the
+original basket: equal-weight, monthly rebalance, 100% long/100% short,
+no timing rule.
+
+**Data note, since this took real digging to get right**: every one of
+these 10 tickers has been verified via WRDS to resolve to a single PERMNO
+over the test window (`RH`'s two CUSIPs are its 2016 corporate
+restructuring, not a different company) — two other candidate names,
+`TPR` (Tapestry) and `CPRI` (Capri Holdings), were dropped after finding
+their current tickers only cover the post-rename portion of each
+company's history (formerly `COH`/Coach and `KORS`/Michael Kors), and
+three of the tickers actually pulled (`RL`, `RH`, `FIVE`) initially came
+back mixed with an entirely unrelated, earlier company that happened to
+have used the same ticker string years before the real company existed —
+both `ULTA` and `LULU` were chosen specifically because they've held one
+ticker for their entire public life. The sample is bounded to **2013-01-01
+onward**, since `BURL` (Burlington Stores) didn't IPO until Oct 2013 — the
+binding constraint once the above issues are resolved.
+
+| | Result |
+|---|---|
+| N | 52 quarters (2013–2025) |
+| Contemporaneous | p=0.881 |
+| Lagged joint F, n=1 | p=0.293 |
+| n=2 | p=0.530 |
+| n=3 | p=0.007 |
+| n=4 | p=0.002 |
+
+**This is a null, not a hit — despite two of the four lag lengths clearing
+5%.** Null at n=1 and n=2, only "significant" once 3-4 lag terms are added
+jointly, is the exact fragile pattern this project has already flagged and
+rejected once before: `USD/JPY` vs. K showed the identical signature
+("only 'sig.' at 3-4 lags... the signature of a specification-mined result
+rather than a real relationship, not a finding to report as if it were,"
+`k_index_model/README.md`). A genuine relationship shows up consistently
+across nearby lag lengths — the way the Treasury result does, significant
+at every one of 1 through 4 — not only once enough extra regressors are
+added to soak up noise. The standard lag-1 spec (used for the outlier
+check everywhere else in this project) was already null before checking
+(p=0.424) and stays null ex-outliers (p=0.161, dropping the 3 quarters
+where the basket's own return exceeded 2 std: 2013Q2, 2016Q1, 2024Q3).
+
+**Even after fixing the conceptual overlap problem, K still doesn't
+predict an equity long/short.** This is now a fifth confirmation (after
+the original long/short, REITs, FX/gold, and MBS) that K's asset-price
+relationship is narrowly specific to rate-sensitive fixed income — not
+equities, under any construction tried so far, including one purpose-built
+to remove the mechanical confound the others had. Full output:
+`output/k_luxury_discount_test_results.txt`,
+`output/k_luxury_discount_test_summary.csv`, chart:
+`output/k_luxury_discount_chart.png`.
+
 ## Does the DIRECTION of K/BEDI (rising vs. falling) explain equities?
 
 `k_index_model`'s advisor-requested specification test found that, for
