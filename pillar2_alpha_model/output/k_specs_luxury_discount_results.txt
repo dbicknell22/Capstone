@@ -1,0 +1,39 @@
+Level, Difference, and Direction of K against the luxury/discount
+consumer basket's return. Methodology: contemporaneous_and_lagged_test()
+-- two SEPARATE regressions (contemporaneous-only, lagged-only joint
+F-test), swept across lag lengths 1-4, same discipline as every other
+regression in this project.
+
+=== Level of K ===
+  N = 52 quarters (2013-03-31 -> 2025-12-31)
+  contemporaneous: coef=-0.0021, p=0.8813
+  n_lags=1: joint F=1.131, p=0.2926
+  n_lags=2: joint F=0.642, p=0.5304
+  n_lags=3: joint F=4.540, p=0.0070
+  n_lags=4: joint F=4.907, p=0.0022
+  outlier-robustness check on contemporaneous (3 quarters with |basket return| > 2 std dropped): ['2013-06-30', '2016-03-31', '2024-09-30']
+    full sample:  coef=-0.0021, p=0.8813 (N=52)
+    ex-outliers:  coef=-0.0139, p=0.4040 (N=49)
+
+=== Difference of K ===
+  N = 52 quarters (2013-03-31 -> 2025-12-31)
+  contemporaneous: coef=0.0920, p=0.0257
+  n_lags=1: joint F=0.027, p=0.8710
+  n_lags=2: joint F=5.478, p=0.0071
+  n_lags=3: joint F=6.585, p=0.0008
+  n_lags=4: joint F=5.037, p=0.0018
+  outlier-robustness check on contemporaneous (3 quarters with |basket return| > 2 std dropped): ['2013-06-30', '2016-03-31', '2024-09-30']
+    full sample:  coef=0.0920, p=0.0257 (N=52)
+    ex-outliers:  coef=0.0881, p=0.0079 (N=49)
+
+=== Direction of K ===
+  N = 52 quarters (2013-03-31 -> 2025-12-31)
+  contemporaneous: coef=0.0772, p=0.0006
+  n_lags=1: joint F=0.271, p=0.6050
+  n_lags=2: joint F=0.776, p=0.4657
+  n_lags=3: joint F=0.925, p=0.4361
+  n_lags=4: joint F=0.822, p=0.5180
+  outlier-robustness check on contemporaneous (3 quarters with |basket return| > 2 std dropped): ['2013-06-30', '2016-03-31', '2024-09-30']
+    full sample:  coef=0.0772, p=0.0006 (N=52)
+    ex-outliers:  coef=0.0703, p=0.0006 (N=49)
+

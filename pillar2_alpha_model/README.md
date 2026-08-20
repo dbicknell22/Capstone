@@ -443,15 +443,83 @@ check everywhere else in this project) was already null before checking
 (p=0.424) and stays null ex-outliers (p=0.161, dropping the 3 quarters
 where the basket's own return exceeded 2 std: 2013Q2, 2016Q1, 2024Q3).
 
-**Even after fixing the conceptual overlap problem, K still doesn't
-predict an equity long/short.** This is now a fifth confirmation (after
-the original long/short, REITs, FX/gold, and MBS) that K's asset-price
-relationship is narrowly specific to rate-sensitive fixed income — not
-equities, under any construction tried so far, including one purpose-built
-to remove the mechanical confound the others had. Full output:
+**Even after fixing the conceptual overlap problem, the LEVEL of K still
+doesn't predict this basket.** That's the fifth confirmation (after the
+original long/short, REITs, FX/gold, and MBS) that K's *level* relationship
+is narrowly specific to rate-sensitive fixed income. But this basket was
+also run through the same Level/Difference/Direction specification battery
+used for Treasury (`k_specification_test.py`) and the original long/short
+(`all_angles_long_short.py`) — and unlike every other equity test in this
+project, two of those three specifications come back genuinely
+significant. See below. Full output:
 `output/k_luxury_discount_test_results.txt`,
 `output/k_luxury_discount_test_summary.csv`, chart:
 `output/k_luxury_discount_chart.png`.
+
+## Level, Difference, and Direction of K against the luxury/discount basket — the first real equity hit in this project
+
+Same three specifications tested for Treasury and for the original
+long/short: Level (K itself), Difference (K_t − K_{t-1}), and Direction
+(1 if K rose last quarter, 0 if it fell) — full-sample K, contemporaneous
+and lagged tested separately, swept 1–4, outlier check on anything
+clearing 10%.
+
+| | Contemporaneous | n=1 | n=2 | n=3 | n=4 |
+|---|---|---|---|---|---|
+| **Level of K** | p=0.881 | p=0.293 | p=0.530 | p=0.007 | p=0.002 |
+| **Difference of K** | **p=0.026** | p=0.871 | p=0.007 | p=0.001 | p=0.002 |
+| **Direction of K** | **p=0.0006** | p=0.605 | p=0.466 | p=0.436 | p=0.518 |
+
+**Level repeats the same fragile pattern already seen and rejected for
+`USD/JPY`** — null at n=1/n=2, only clearing 5% once 3-4 lag terms are
+added jointly. **Difference of K's lagged pattern is the identical fragile
+signature** — null at n=1, only significant once n=2-4 are added — so
+that part isn't a second finding either, just the same artifact showing up
+in a different specification.
+
+**But Difference and Direction of K's *contemporaneous* readings are
+genuine, and this is the first equity result in the whole project that
+actually survives the standard checks:**
+
+- **Direction of K**: coefficient 0.0772, p=0.0006 — and it barely moves
+  under the outlier check (p=0.0006 → 0.0006, coefficient 0.0772 → 0.0703,
+  dropping the same 3 outlier quarters as above). The raw split makes the
+  same point in plain terms: average basket return is **+3.9%** in
+  quarters K rose, **−3.8%** in quarters K fell — a clean, symmetric
+  separation across a near-even 25/27 split of the sample, not a result
+  driven by one tail.
+- **Difference of K**: coefficient 0.0920, p=0.026, and it actually
+  *strengthens* ex-outliers (p=0.026 → 0.008, coefficient roughly stable at
+  0.0920 → 0.0881).
+
+**Why this one holds up where the original long/short and every other
+equity test didn't**: this basket was purpose-built to remove the
+mechanical overlap with K's own construction (see above) — these are
+niche, mid-cap consumer names, not major components of the broad-market
+equity holdings that feed K's aggregate wealth-pillar data, so a
+same-quarter co-movement here is much less likely to just be K mechanically
+reacting to these specific stocks. Economically, it's also the most direct
+possible pairing tried in this project: K rising *is*, almost by
+definition, top-of-distribution consumption pulling away from the bottom
+in the same quarter — so finding that reflected in luxury-vs-discount
+retailer stock prices in that same quarter is about as intuitive a result
+as this project has produced.
+
+**Appropriate caution, same standard applied to every other result here**:
+N=52 quarters is a real but modest sample, and — more importantly —
+**this is a contemporaneous relationship, not a lagged/predictive one.**
+Every tradeable strategy built elsewhere in this project (K-timed Treasury,
+BEDI-timed Treasury) relies specifically on a *lagged* signal — observing
+K at the end of quarter t-1 to decide what to hold in quarter t. A
+same-quarter relationship doesn't support that mechanism: by the time a
+quarter's K reading is known, that quarter's basket return has already
+happened alongside it. This is a genuine descriptive/validating finding —
+real evidence that K's divergence concept shows up in actual market prices
+for equities, not just Treasuries — but it is not, on its own, a trading
+signal the way the Treasury results are. Full output:
+`output/k_specs_luxury_discount_results.txt`,
+`output/k_specs_luxury_discount_summary.csv`, chart:
+`output/k_specs_luxury_discount_chart.png`.
 
 ## Does the DIRECTION of K/BEDI (rising vs. falling) explain equities?
 
