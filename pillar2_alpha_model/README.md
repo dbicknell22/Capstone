@@ -521,6 +521,43 @@ signal the way the Treasury results are. Full output:
 `output/k_specs_luxury_discount_summary.csv`, chart:
 `output/k_specs_luxury_discount_chart.png`.
 
+### Could the lag-3/lag-4 "significance" be traded anyway? A negative-control backtest
+
+The Level-of-K lagged joint F-tests cleared 5% at n=3 (p=0.007) and n=4
+(p=0.002) — already flagged above as the same fragile, spec-mined
+signature rejected for `USD/JPY`. Pulling the *individual* lag
+coefficients out of those regressions makes the case even more directly:
+they alternate sign from one lag to the next (K_lag2 coef=+0.094,
+K_lag3 coef=**−0.112**, K_lag4 coef=+0.093) — a pattern with no coherent
+economic story (a real effect should decay or persist in one direction,
+the way K_lag1's coefficient does at every lag length against Treasury),
+and the textbook signature of multicollinearity: K_lag1 through K_lag4
+are the same series one quarter apart, so cramming all of them into one
+regression with only ~50 quarters of data lets the model assign large,
+noise-fitting, oppositely-signed coefficients to adjacent lags.
+
+`k_timed_luxury_discount_backtest.py` tests the literal trading rule
+anyway — hold long-luxury/short-discount when K (lagged, point-in-time) is
+positive, cash otherwise — rather than asserting the conclusion without
+checking it against real returns, the same standard applied to the
+de-risking-timed long/short negative control earlier in this project:
+
+| | Always-on | lag=1 | lag=2 | lag=3 | lag=4 |
+|---|---|---|---|---|---|
+| Sharpe | −0.02 | −0.14 | −0.41 | **−0.61** | −0.22 |
+
+**None of the four lags produce a positive Sharpe, and lag=3/lag=4 — the
+two lags that looked significant in the regression — are the *worst*
+performers, not the best.** Worse still: inverting the signal at lag=3
+turns a −0.61 Sharpe into **+0.39**, and at lag=4 turns −0.22 into
+**+0.13** — the opposite of what a real signal should do (a real signal
+gets *worse*, not better, when flipped). This confirms directly, in
+return terms rather than only p-values, that the lag-3/lag-4 result was
+never tradeable. Full output:
+`output/k_timed_luxury_discount_backtest_results.txt`,
+`output/k_timed_luxury_discount_backtest_summary.csv`, chart:
+`output/k_timed_luxury_discount_chart.png`.
+
 ## Does the DIRECTION of K/BEDI (rising vs. falling) explain equities?
 
 `k_index_model`'s advisor-requested specification test found that, for

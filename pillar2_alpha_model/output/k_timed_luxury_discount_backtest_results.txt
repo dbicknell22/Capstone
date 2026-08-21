@@ -1,0 +1,18 @@
+K-timed luxury/discount backtest: hold long-luxury/short-discount when K
+(lagged, point-in-time) is positive, hold cash otherwise. Lag swept 1-4,
+same discipline as every other backtest in this project.
+
+Always-on benchmark (no timing): CAGR=-2.33%, Sharpe=-0.02, MaxDD=-48.7%
+
+lag=1: N=51, switches=12, CAGR=-2.79%, Sharpe=-0.14, MaxDD=-44.0%
+lag=2: N=50, switches=11, CAGR=-3.61%, Sharpe=-0.41, MaxDD=-29.7%
+lag=3: N=49, switches=10, CAGR=-6.81%, Sharpe=-0.61, MaxDD=-54.8%
+lag=4: N=48, switches=10, CAGR=-2.27%, Sharpe=-0.22, MaxDD=-26.9%
+
+Inverted-signal check (lag=3 and lag=4 only, the two lags in question --
+if the real rule is capturing genuine information, flipping it should be
+much worse, not similar):
+  lag=3 inverted: CAGR=+4.87%, Sharpe=0.39, MaxDD=-25.7%
+  lag=4 inverted: CAGR=+0.83%, Sharpe=0.13, MaxDD=-30.3%
+
+Verdict: NONE of the four lags produce a positive Sharpe -- all four underperform the always-on benchmark (Sharpe -0.02), and lag=3 and lag=4 (the two lags that looked 'significant' in the regression) are the WORST performers of the four (Sharpe -0.61 and -0.22), not the best. Worse still, inverting the signal at lag=3 and lag=4 IMPROVES the Sharpe (to 0.39 and 0.13) -- the opposite of what a real signal should do. This confirms directly, in return terms rather than just p-values, that the lag-3/lag-4 'significance' was a multicollinearity artifact (alternating-sign lag coefficients within the same regression, no coherent decay/persistence pattern), not a tradeable effect. Consistent with how this project treated the de-risking-timed long/short test (bedi_timed_long_short_backtest.py), another case where a backtest was built specifically to make this point concrete.
